@@ -134,7 +134,7 @@
                       <img src="img/adele.jpg" style="--i: 5" alt="" />
                     </div>
                   </div>
-                  <a href="#" class="btn">start</a>
+                  <button class="btn" @click="separate">start</button>
                 </div>
 
                 <div class="step-and-activity activity-two">
@@ -149,36 +149,8 @@
                       <img src="img/adele.jpg" style="--i: 2" alt="" />
                     </div>
                   </div>
-                  <button class="btn">start</button>
+                  <button class="btn" @click="start_convert">start</button>
                 </div>
-
-                <!-- <div class="step-and-activity activity-three">
-                  <div class="step">
-                    <h1>3</h1>
-                    <p>out</p>
-                  </div>
-                  <div class="activity">
-                    <h2>输出音频</h2>
-                    <div class="participants">
-                      <img
-                        src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/32037044-f076-433a-8a6e-9b80842f29c9"
-                        style="--i: 1"
-                        alt=""
-                      />
-                      <img
-                        src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/e082b965-bb88-4192-bce6-0eb8b0bf8e68"
-                        style="--i: 2"
-                        alt=""
-                      />
-                      <img
-                        src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/c61daa1c-5881-43f8-a50f-62be3d235daf"
-                        style="--i: 3"
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                  <a href="path/to/your/file" class="btn" download>start</a>
-                </div> -->
 
                 <div class="step-and-activity activity-four">
                   <div class="step">
@@ -206,15 +178,16 @@
                   <p>变调</p>
                   <div class="slider-container">
                     <input
+                      v-model="key"
+                      :disabled="prohibited1"
                       type="range"
                       min="-12"
                       max="12"
-                      v-model="key_music"
                       class="slider"
                       id="mySlider"
                     />
                     <p class="clider-text">
-                      Value: <span id="sliderValue">{{key_music}}</span>
+                      Value: <span id="sliderValue">{{key}}</span>
                     </p>
                   </div>
                 </div>
@@ -222,9 +195,11 @@
                   <p>说话人id</p>
                   <div class="form__group u-margin-left-large">
                     <input
+                      v-model="singerid"
+                      :disabled="prohibited2"
                       type="text"
                       class="form__input"
-                      placeholder="说话人id"
+                      placeholder="exp:taylor"
                       id="id"
                       required
                     />
@@ -237,12 +212,12 @@
                     <input
                       type="text"
                       class="form__input"
-                      placeholder="请填写1-100的数"
+                      placeholder="请填写1-50的整数"
                       id="accelerate"
                       required
                     />
                     <label for="accelerate" class="form__label"
-                      >请填写1-100的数</label
+                      >请填写1-50的整数</label
                     >
                   </div>
                 </div>
@@ -456,9 +431,9 @@
         </div>
       </div>
 
-      <div class="popup" :class="class2Obj">
+      <!-- <div class="popup" :class="class2Obj">
         <div class="popup__content"></div>
-      </div>
+      </div> -->
     </main>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -478,16 +453,16 @@
       data() {
         return {
           file_path: "raw/example.wav",
-          key_music: 0,
-          id_talker: "",
+          key: 0,
+          singerid: "",
           completion: 85,
           classObj: {
             showus: false,
           },
-          class2Obj: {
-            showus: false,
-          },
           navclassObj: { active: false },
+          prohibited1: false,
+          prohibited2: false,
+          isSeparatecpl: false,
         };
       },
       methods: {
@@ -511,8 +486,8 @@
           }
           // ...这里可以做对文件大小的限制、后缀名的限制的逻辑
           console.log("已经取到文件，并且处理完成");
-
           //    2.上传文件到服务器
+          //  /sing
           let formData = new FormData();
           formData.append("sing", file);
           formData.append("name", file.name);
@@ -529,6 +504,69 @@
             .catch((reason) => {
               alert("文件上传失败");
             });
+        },
+        separate() {
+          //  /separate
+          instance
+            .get("/separate")
+            .then((data) => {
+              if (+data.code === 0) {
+                alert("人声分离完成");
+                this.isSeparatecpl = true;
+                return;
+              }
+            })
+            .catch((reason) => {
+              alert("人声分离失败");
+            });
+        },
+        start_convert() {
+          if (this.singerid === "") {
+            alert("说话人id是必填项,请填写完成后再点击开始转换");
+            return;
+          } else if (this.isSeparatecpl === false) {
+            alert("人声分离还未完成");
+            return;
+          }
+          //  /key
+          let keyfd = new FormData();
+          keyfd.append("key", this.key);
+          console.log(`vue成功拿到key,值为:${this.key}`);
+          this.prohibited1 = true; //禁用表单
+          instance
+            .post("/key", keyfd)
+            .then((data) => {
+              if (+data.code === 0) {
+                alert("后台成功获取key值");
+                return;
+              }
+            })
+            .catch((reason) => {
+              console.log(reason.message);
+              alert(`获取key值失败,可能的原因是${reason.message}`);
+            });
+
+          //  /id  这个是必填
+          let idfd = new FormData();
+          idfd.append("id", this.singerid);
+          console.log(`vue成功拿到singerid,值为:${this.singerid}`);
+          this.prohibited2 = true; //禁用表单
+          instance
+            .post("/id", idfd)
+            .then((data) => {
+              if (+data.code === 0) {
+                alert("后台成功获取id值");
+                return;
+              }
+            })
+            .catch((reason) => {
+              console.log(reason.message);
+              alert(`获取key值失败,可能的原因是${reason.message}`);
+            });
+          //  /speedup
+          //  /f0_adjust
+          //  /use_GPU
+          //  /use_diff
         },
       },
     });

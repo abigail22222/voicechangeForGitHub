@@ -13,7 +13,6 @@ instance.interceptors.response.use(
     return response.data;
   },
   (reason) => {
-    //...error的提示
     return Promise.reject(reason);
   }
 );
