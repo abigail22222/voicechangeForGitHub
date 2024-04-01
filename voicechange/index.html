@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Song conversion model based on ddsp-svc</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.loli.net/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.loli.net/css?family=Lato:900,300&subset=latin-ext"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+
+  <body>
+    <main id="app" class="board">
+      <nav class="main-menu">
+        <h1>web ui</h1>
+        <ul>
+          <li class="nav-item" :class="navclassObj" @click="thisNav1">
+            <b></b>
+            <b></b>
+            <a href="./info.html">
+              <ion-icon
+                name="bulb-outline"
+                class="fa fa-house nav-icon"
+              ></ion-icon>
+              <span class="nav-text">说明</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <b></b>
+            <b></b>
+            <a href="./index.html">
+              <ion-icon
+                name="hourglass-outline"
+                class="fa fa-house nav-icon"
+              ></ion-icon>
+              <span class="nav-text">推理</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <section class="content">
+        <div class="left-content">
+          <div class="activities">
+            <h1>选择待转换音频&nbsp;📚请先看说明再操作</h1>
+            <div class="activity-container">
+              <div class="image-container img-one">
+                <img src="img/guitar-blue.jpg" alt="upload file" />
+
+                <div class="overlay">
+                  <label for="file-upload" class="upload-container">
+                    <div class="upload-text" id="upload-status">
+                      点击此处上传音频文件
+                    </div>
+                    <input
+                      type="file"
+                      id="file-upload"
+                      class="upload-input"
+                      name="sing"
+                      @change="upload"
+                    />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="upload-icon"
+                      id="upload-icon"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+                      />
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="upload-icon-sec"
+                      id="upload-icon-sec"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                  </label>
+                </div>
+              </div>
+
+              <div class="image-container img-two">
+                <img src="img/path.jpg" alt="get file" />
+                <div class="overlay">
+                  <div class="download-container">
+                    <div class="download-text">文件路径</div>
+                    <div class="file_path-text">
+                      <p>{{file_path}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="left-bottom">
+            <div class="schedule">
+              <h1 class="popup-btn" @click="openPopup">Schedule&nbsp;💡</h1>
+              <div class="options">
+                <div class="step-and-activity activity-one">
+                  <div class="step">
+                    <h1>1</h1>
+                    <p>split</p>
+                  </div>
+                  <div class="activity">
+                    <h2>人声分离</h2>
+                    <div class="participants">
+                      <img src="img/ts.jpg" style="--i: 1" alt="" />
+                      <img src="img/tlp.jpg" style="--i: 2" alt="" />
+                      <img src="img/tan.jpg" style="--i: 3" alt="" />
+                      <img src="img/Justin-Bieber.jpg" style="--i: 4" alt="" />
+                      <img src="img/adele.jpg" style="--i: 5" alt="" />
+                    </div>
+                  </div>
+                  <a href="#" class="btn">start</a>
+                </div>
+
+                <div class="step-and-activity activity-two">
+                  <div class="step">
+                    <h1>2</h1>
+                    <p>in</p>
+                  </div>
+                  <div class="activity">
+                    <h2>开始转换</h2>
+                    <div class="participants">
+                      <img src="img/ts.jpg" style="--i: 1" alt="" />
+                      <img src="img/adele.jpg" style="--i: 2" alt="" />
+                    </div>
+                  </div>
+                  <button class="btn">start</button>
+                </div>
+
+                <!-- <div class="step-and-activity activity-three">
+                  <div class="step">
+                    <h1>3</h1>
+                    <p>out</p>
+                  </div>
+                  <div class="activity">
+                    <h2>输出音频</h2>
+                    <div class="participants">
+                      <img
+                        src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/32037044-f076-433a-8a6e-9b80842f29c9"
+                        style="--i: 1"
+                        alt=""
+                      />
+                      <img
+                        src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/e082b965-bb88-4192-bce6-0eb8b0bf8e68"
+                        style="--i: 2"
+                        alt=""
+                      />
+                      <img
+                        src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/c61daa1c-5881-43f8-a50f-62be3d235daf"
+                        style="--i: 3"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <a href="path/to/your/file" class="btn" download>start</a>
+                </div> -->
+
+                <div class="step-and-activity activity-four">
+                  <div class="step">
+                    <h1>4</h1>
+                    <p>merge</p>
+                  </div>
+                  <div class="activity">
+                    <h2>混音</h2>
+                    <div class="participants">
+                      <img src="img/ts.jpg" style="--i: 1" alt="" />
+                      <img src="img/tlp.jpg" style="--i: 2" alt="" />
+                      <img src="img/tan.jpg" style="--i: 3" alt="" />
+                      <img src="img/Justin-Bieber.jpg" style="--i: 4" alt="" />
+                      <img src="img/adele.jpg" style="--i: 5" alt="" />
+                    </div>
+                  </div>
+                  <button class="btn">start</button>
+                </div>
+              </div>
+            </div>
+            <div class="personal-bests">
+              <h1>Personal Bests</h1>
+              <div class="personal-bests-container">
+                <div class="best-item box-one">
+                  <p>变调</p>
+                  <div class="slider-container">
+                    <input
+                      type="range"
+                      min="-12"
+                      max="12"
+                      v-model="key_music"
+                      class="slider"
+                      id="mySlider"
+                    />
+                    <p class="clider-text">
+                      Value: <span id="sliderValue">{{key_music}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="best-item box-two">
+                  <p>说话人id</p>
+                  <div class="form__group u-margin-left-large">
+                    <input
+                      type="text"
+                      class="form__input"
+                      placeholder="说话人id"
+                      id="id"
+                      required
+                    />
+                    <label for="id" class="form__label">说话人id</label>
+                  </div>
+                </div>
+                <div class="best-item box-three">
+                  <p>加速倍数</p>
+                  <div class="form__group u-margin-left-large">
+                    <input
+                      type="text"
+                      class="form__input"
+                      placeholder="请填写1-100的数"
+                      id="accelerate"
+                      required
+                    />
+                    <label for="accelerate" class="form__label"
+                      >请填写1-100的数</label
+                    >
+                  </div>
+                </div>
+                <div class="best-item box-four">
+                  <div class="true_or_false">
+                    <p>基频校准</p>
+                    <div class="form__group">
+                      <div class="form__radio-group">
+                        <input
+                          type="radio"
+                          class="form__radio-input"
+                          id="small"
+                          name="size"
+                        />
+                        <label for="small" class="form__radio-label">
+                          <span class="form__radio-button"></span>T</label
+                        >
+                      </div>
+                      <div class="form__radio-group">
+                        <input
+                          type="radio"
+                          class="form__radio-input"
+                          id="large"
+                          name="size"
+                        />
+                        <label for="large" class="form__radio-label"
+                          ><span class="form__radio-button"></span>F</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="true_or_false">
+                    <p class="u-font-weight">USE_Diff</p>
+                    <div class="form__group">
+                      <div class="form__radio-group">
+                        <input
+                          type="radio"
+                          class="form__radio-input"
+                          id="small"
+                          name="size"
+                        />
+                        <label for="small" class="form__radio-label">
+                          <span class="form__radio-button"></span>T</label
+                        >
+                      </div>
+                      <div class="form__radio-group">
+                        <input
+                          type="radio"
+                          class="form__radio-input"
+                          id="large"
+                          name="size"
+                        />
+                        <label for="large" class="form__radio-label"
+                          ><span class="form__radio-button"></span>F</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="true_or_false">
+                    <p class="u-font-weight">USE GPU</p>
+                    <div class="form__group">
+                      <div class="form__radio-group">
+                        <input
+                          type="radio"
+                          class="form__radio-input"
+                          id="small"
+                          name="size"
+                        />
+                        <label for="small" class="form__radio-label">
+                          <span class="form__radio-button"></span>T</label
+                        >
+                      </div>
+                      <div class="form__radio-group">
+                        <input
+                          type="radio"
+                          class="form__radio-input"
+                          id="large"
+                          name="size"
+                        />
+                        <label for="large" class="form__radio-label"
+                          ><span class="form__radio-button"></span>F</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-content">
+          <div class="user-info">
+            <h4>help and more</h4>
+          </div>
+
+          <div class="active-calories">
+            <h1 style="align-self: flex-start">Progress Bar</h1>
+            <div class="active-calories-container">
+              <div class="box" style="--i: 85%">
+                <div class="circle">
+                  <h2>{{completion}}<small>%</small></h2>
+                </div>
+              </div>
+              <div class="calories-content">
+                <p><span>xxx文件信息:</span> 400</p>
+                <p><span>some文件信息:</span> 3500</p>
+                <p><span>一些文件信息:</span> 14000</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="friends-activity">
+            <h1>Sound Color 5种可选音色</h1>
+            <div class="card-container">
+              <div class="card">
+                <div class="card-user-info">
+                  <img src="img/tlp.jpg" alt="trump profile" />
+                  <h2>Trump</h2>
+                </div>
+                <img
+                  class="card-img"
+                  src="img/tlp-large.jpg"
+                  alt="trump when speeking"
+                />
+                <p>用前美国总统特朗普的声音来翻唱你想让他唱的歌!😏</p>
+              </div>
+              <div class="card card-two">
+                <div class="card-user-info">
+                  <img src="img/ts.jpg" alt="Taylor profile" />
+                  <h2>Taylor Swift</h2>
+                </div>
+                <img
+                  class="card-img"
+                  src="img/ts-large-2.jpg"
+                  alt="Taylor Swift"
+                />
+                <p>用世界巨星泰勒·斯威夫特美妙的嗓音翻唱你想让她唱的歌!🥰</p>
+              </div>
+              <div class="card card-two">
+                <div class="card-user-info">
+                  <img src="img/Justin-Bieber.jpg" alt="Justin profile" />
+                  <h2>Justin Bieber</h2>
+                </div>
+                <img
+                  class="card-img"
+                  src="img/Justin-Bieber-large.jpg"
+                  alt="Justin Bieber"
+                />
+                <p>用美国唱将贾斯汀·比伯的声音翻唱你想让他唱的歌!💪</p>
+              </div>
+              <div class="card card-two">
+                <div class="card-user-info">
+                  <img src="img/adele.jpg" alt="Adele profile" />
+                  <h2>Adele</h2>
+                </div>
+                <img class="card-img" src="img/Adele-large.jpg" alt="Adele" />
+                <p>用实例厚嗓力量歌手阿黛尔的独特声音翻唱你想让她唱的歌!🤩</p>
+              </div>
+              <div class="card">
+                <div class="card-user-info">
+                  <img src="img/tan.jpg" alt="trump profile" />
+                  <h2>组员·谭美姿</h2>
+                </div>
+                <img
+                  class="card-img"
+                  src="img/tan-large.jpg"
+                  alt="trump when speeking"
+                />
+                <p>用我们服创小组成员谭美姿的动听声音翻唱你想让她唱的歌!🏃‍♀️🎉</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="popup" :class="classObj">
+        <div class="popup__content">
+          <div class="popup__left">
+            <img src="img/popup-1.jpg" alt="popup img 1" class="popup__img" />
+            <img src="img/popup-2.jpg" alt="popup img 2" class="popup__img" />
+          </div>
+          <div class="popup__right">
+            <ion-icon
+              name="close-outline"
+              class="popup__close"
+              @click="closePopup"
+            ></ion-icon>
+
+            <h2 class="heading-secondary u-margin-bottom-small">
+              Notes on Reasoning
+            </h2>
+            <h3 class="heading-tertiary u-margin-bottom-small">
+              Important &ndash; Please read these terms before booking
+            </h3>
+            <p class="popup__text">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quidem
+              voluptas dignissimos, odit sapiente fuga hic. Dignissimos modi et
+              officia nisi non delectus laborum similique, sint, qui excepturi
+              alias magnam voluptatum. Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Ab atque id vitae aliquid similique vel
+              molestias autem repellat officiis iure optio, sapiente, cum
+              assumenda laborum, facilis incidunt saepe cumque? Enim?Lorem ipsum
+              dolor sit amet consectetur, adipisicing elit. Sint fuga eaque
+              consequuntur, obcaecati recusandae, tenetur voluptates
+              necessitatibus quos laudantium natus maxime illum corrupti
+              repellat voluptatibus labore aliquid, nemo officiis! Beatae. Lorem
+              ipsum dolor sit amet consectetur adipisicing elit.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup" :class="class2Obj">
+        <div class="popup__content"></div>
+      </div>
+    </main>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="instance.js"></script>
+  <script>
+    const vm = new Vue({
+      el: "#app",
+      data() {
+        return {
+          file_path: "raw/example.wav",
+          key_music: 0,
+          id_talker: "",
+          completion: 85,
+          classObj: {
+            showus: false,
+          },
+          class2Obj: {
+            showus: false,
+          },
+          navclassObj: { active: false },
+        };
+      },
+      methods: {
+        thisNav1() {
+          this.navclassObj.active = true;
+        },
+        closePopup() {
+          this.classObj.showus = false;
+        },
+        openPopup() {
+          this.classObj.showus = true;
+        },
+        upload(e) {
+          //   1.获取文件对象
+          let file = e.target.files[0];
+          //如果没有对象直接返回  测试者可能点击取消上传文件
+          if (!file) {
+            console.log("没获取到文件，给用户提示");
+            alert("请先选择要上传的文件");
+            return;
+          }
+          // ...这里可以做对文件大小的限制、后缀名的限制的逻辑
+          console.log("已经取到文件，并且处理完成");
+
+          //    2.上传文件到服务器
+          let formData = new FormData();
+          formData.append("sing", file);
+          formData.append("name", file.name);
+          console.log("成功拿到formData做请求体");
+          instance
+            .post("/sing", formData)
+            .then((data) => {
+              if (+data.code === 0) {
+                alert("文件上传成功");
+                this.file_path = "文件已上传至：" + data.servicePath;
+                return;
+              }
+            })
+            .catch((reason) => {
+              alert("文件上传失败");
+            });
+        },
+      },
+    });
+
+    // const upload_input = document.querySelector(".upload-input");
+    // //input change 事件监听
+    // upload_input.addEventListener("change", function () {
+    //   // document.getElementById("upload-status").innerText = "上传成功";
+    //   // document.getElementById("upload-icon-sec").style.display = "inline-block"; // 显示成功图标
+    //   // document.getElementById("upload-icon").style.display = "none";
+    // });
+  </script>
+</html>

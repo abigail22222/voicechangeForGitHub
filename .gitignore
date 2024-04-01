@@ -1,0 +1,4 @@
+*.jpg
+*.md
+node_modules
+.vscode
