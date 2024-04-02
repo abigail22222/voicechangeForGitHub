@@ -53,7 +53,7 @@
             <h1>选择待转换音频&nbsp;📚请先看说明再操作</h1>
             <div class="activity-container">
               <div class="image-container img-one">
-                <img src="img/guitar-blue.jpg" alt="upload file" />
+                <img src="img/file.jpg" alt="upload file" />
 
                 <div class="overlay">
                   <label for="file-upload" class="upload-container">
@@ -66,6 +66,7 @@
                       class="upload-input"
                       name="sing"
                       @change="upload"
+                      :disabled="prohibited1"
                     />
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +168,7 @@
                       <img src="img/adele.jpg" style="--i: 5" alt="" />
                     </div>
                   </div>
-                  <button class="btn">start</button>
+                  <button class="btn" @click="combine_audio">start</button>
                 </div>
               </div>
             </div>
@@ -179,7 +180,7 @@
                   <div class="slider-container">
                     <input
                       v-model="key"
-                      :disabled="prohibited1"
+                      :disabled="prohibited"
                       type="range"
                       min="-12"
                       max="12"
@@ -196,7 +197,7 @@
                   <div class="form__group u-margin-left-large">
                     <input
                       v-model="singerid"
-                      :disabled="prohibited2"
+                      :disabled="prohibited"
                       type="text"
                       class="form__input"
                       placeholder="exp:taylor"
@@ -210,13 +211,15 @@
                   <p>加速倍数</p>
                   <div class="form__group u-margin-left-large">
                     <input
+                      v-model="speedup"
+                      :disabled="prohibited"
                       type="text"
                       class="form__input"
                       placeholder="请填写1-50的整数"
-                      id="accelerate"
+                      id="speedup"
                       required
                     />
-                    <label for="accelerate" class="form__label"
+                    <label for="speedup" class="form__label"
                       >请填写1-50的整数</label
                     >
                   </div>
@@ -227,23 +230,29 @@
                     <div class="form__group">
                       <div class="form__radio-group">
                         <input
+                          value="true"
+                          v-model="f0"
+                          :disabled="prohibited"
                           type="radio"
                           class="form__radio-input"
-                          id="small"
-                          name="size"
+                          id="adjust1"
+                          name="f0_adjust"
                         />
-                        <label for="small" class="form__radio-label">
+                        <label for="adjust1" class="form__radio-label">
                           <span class="form__radio-button"></span>T</label
                         >
                       </div>
                       <div class="form__radio-group">
                         <input
+                          value="false"
+                          v-model="f0"
+                          :disabled="prohibited"
                           type="radio"
                           class="form__radio-input"
-                          id="large"
-                          name="size"
+                          id="adjust2"
+                          name="f0_adjust"
                         />
-                        <label for="large" class="form__radio-label"
+                        <label for="adjust2" class="form__radio-label"
                           ><span class="form__radio-button"></span>F</label
                         >
                       </div>
@@ -254,23 +263,29 @@
                     <div class="form__group">
                       <div class="form__radio-group">
                         <input
+                          value="true"
+                          v-model="use_diff"
+                          :disabled="prohibited"
                           type="radio"
                           class="form__radio-input"
-                          id="small"
-                          name="size"
+                          id="diff1"
+                          name="use_diff"
                         />
-                        <label for="small" class="form__radio-label">
+                        <label for="diff1" class="form__radio-label">
                           <span class="form__radio-button"></span>T</label
                         >
                       </div>
                       <div class="form__radio-group">
                         <input
+                          value="false"
+                          v-model="use_diff"
+                          :disabled="prohibited"
                           type="radio"
                           class="form__radio-input"
-                          id="large"
-                          name="size"
+                          id="diff2"
+                          name="use_diff"
                         />
-                        <label for="large" class="form__radio-label"
+                        <label for="diff2" class="form__radio-label"
                           ><span class="form__radio-button"></span>F</label
                         >
                       </div>
@@ -281,23 +296,29 @@
                     <div class="form__group">
                       <div class="form__radio-group">
                         <input
+                          value="true"
+                          v-model="use_gpu"
+                          :disabled="prohibited"
                           type="radio"
                           class="form__radio-input"
-                          id="small"
-                          name="size"
+                          id="gputrue"
+                          name="use_gpu"
                         />
-                        <label for="small" class="form__radio-label">
+                        <label for="gputrue" class="form__radio-label">
                           <span class="form__radio-button"></span>T</label
                         >
                       </div>
                       <div class="form__radio-group">
                         <input
+                          value="false"
+                          v-model="use_gpu"
+                          :disabled="prohibited"
                           type="radio"
                           class="form__radio-input"
-                          id="large"
-                          name="size"
+                          id="gpufalse"
+                          name="use_gpu"
                         />
-                        <label for="large" class="form__radio-label"
+                        <label for="gpufalse" class="form__radio-label"
                           ><span class="form__radio-button"></span>F</label
                         >
                       </div>
@@ -333,7 +354,7 @@
           <div class="friends-activity">
             <h1>Sound Color 5种可选音色</h1>
             <div class="card-container">
-              <div class="card">
+              <div class="card" @click="singerid = 'trump'">
                 <div class="card-user-info">
                   <img src="img/tlp.jpg" alt="trump profile" />
                   <h2>Trump</h2>
@@ -345,7 +366,7 @@
                 />
                 <p>用前美国总统特朗普的声音来翻唱你想让他唱的歌!😏</p>
               </div>
-              <div class="card card-two">
+              <div class="card" @click="singerid = 'taylor'">
                 <div class="card-user-info">
                   <img src="img/ts.jpg" alt="Taylor profile" />
                   <h2>Taylor Swift</h2>
@@ -357,7 +378,7 @@
                 />
                 <p>用世界巨星泰勒·斯威夫特美妙的嗓音翻唱你想让她唱的歌!🥰</p>
               </div>
-              <div class="card card-two">
+              <div class="card" @click="singerid = 'justin'">
                 <div class="card-user-info">
                   <img src="img/Justin-Bieber.jpg" alt="Justin profile" />
                   <h2>Justin Bieber</h2>
@@ -369,7 +390,7 @@
                 />
                 <p>用美国唱将贾斯汀·比伯的声音翻唱你想让他唱的歌!💪</p>
               </div>
-              <div class="card card-two">
+              <div class="card" @click="singerid = 'adele'">
                 <div class="card-user-info">
                   <img src="img/adele.jpg" alt="Adele profile" />
                   <h2>Adele</h2>
@@ -377,7 +398,7 @@
                 <img class="card-img" src="img/Adele-large.jpg" alt="Adele" />
                 <p>用实例厚嗓力量歌手阿黛尔的独特声音翻唱你想让她唱的歌!🤩</p>
               </div>
-              <div class="card">
+              <div class="card" @click="singerid = 'tmz'">
                 <div class="card-user-info">
                   <img src="img/tan.jpg" alt="trump profile" />
                   <h2>组员·谭美姿</h2>
@@ -430,13 +451,9 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="popup" :class="class2Obj">
-        <div class="popup__content"></div>
-      </div> -->
     </main>
   </body>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="vue.js"></script>
   <script
     type="module"
     src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
@@ -447,130 +464,8 @@
   ></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="instance.js"></script>
+  <script src="index.js"></script>
   <script>
-    const vm = new Vue({
-      el: "#app",
-      data() {
-        return {
-          file_path: "raw/example.wav",
-          key: 0,
-          singerid: "",
-          completion: 85,
-          classObj: {
-            showus: false,
-          },
-          navclassObj: { active: false },
-          prohibited1: false,
-          prohibited2: false,
-          isSeparatecpl: false,
-        };
-      },
-      methods: {
-        thisNav1() {
-          this.navclassObj.active = true;
-        },
-        closePopup() {
-          this.classObj.showus = false;
-        },
-        openPopup() {
-          this.classObj.showus = true;
-        },
-        upload(e) {
-          //   1.获取文件对象
-          let file = e.target.files[0];
-          //如果没有对象直接返回  测试者可能点击取消上传文件
-          if (!file) {
-            console.log("没获取到文件，给用户提示");
-            alert("请先选择要上传的文件");
-            return;
-          }
-          // ...这里可以做对文件大小的限制、后缀名的限制的逻辑
-          console.log("已经取到文件，并且处理完成");
-          //    2.上传文件到服务器
-          //  /sing
-          let formData = new FormData();
-          formData.append("sing", file);
-          formData.append("name", file.name);
-          console.log("成功拿到formData做请求体");
-          instance
-            .post("/sing", formData)
-            .then((data) => {
-              if (+data.code === 0) {
-                alert("文件上传成功");
-                this.file_path = "文件已上传至：" + data.servicePath;
-                return;
-              }
-            })
-            .catch((reason) => {
-              alert("文件上传失败");
-            });
-        },
-        separate() {
-          //  /separate
-          instance
-            .get("/separate")
-            .then((data) => {
-              if (+data.code === 0) {
-                alert("人声分离完成");
-                this.isSeparatecpl = true;
-                return;
-              }
-            })
-            .catch((reason) => {
-              alert("人声分离失败");
-            });
-        },
-        start_convert() {
-          if (this.singerid === "") {
-            alert("说话人id是必填项,请填写完成后再点击开始转换");
-            return;
-          } else if (this.isSeparatecpl === false) {
-            alert("人声分离还未完成");
-            return;
-          }
-          //  /key
-          let keyfd = new FormData();
-          keyfd.append("key", this.key);
-          console.log(`vue成功拿到key,值为:${this.key}`);
-          this.prohibited1 = true; //禁用表单
-          instance
-            .post("/key", keyfd)
-            .then((data) => {
-              if (+data.code === 0) {
-                alert("后台成功获取key值");
-                return;
-              }
-            })
-            .catch((reason) => {
-              console.log(reason.message);
-              alert(`获取key值失败,可能的原因是${reason.message}`);
-            });
-
-          //  /id  这个是必填
-          let idfd = new FormData();
-          idfd.append("id", this.singerid);
-          console.log(`vue成功拿到singerid,值为:${this.singerid}`);
-          this.prohibited2 = true; //禁用表单
-          instance
-            .post("/id", idfd)
-            .then((data) => {
-              if (+data.code === 0) {
-                alert("后台成功获取id值");
-                return;
-              }
-            })
-            .catch((reason) => {
-              console.log(reason.message);
-              alert(`获取key值失败,可能的原因是${reason.message}`);
-            });
-          //  /speedup
-          //  /f0_adjust
-          //  /use_GPU
-          //  /use_diff
-        },
-      },
-    });
-
     // const upload_input = document.querySelector(".upload-input");
     // //input change 事件监听
     // upload_input.addEventListener("change", function () {

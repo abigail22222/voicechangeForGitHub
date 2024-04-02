@@ -488,12 +488,14 @@ main {
 .form__radio-input {
   display: none;
 }
+
 .form__radio-label {
   font-size: 1.2rem;
   cursor: pointer;
   padding-left: 1rem;
   position: relative;
 }
+
 .form__radio-button {
   width: 0.8rem;
   height: 0.8rem;
@@ -518,6 +520,7 @@ main {
   opacity: 0;
   transition: all 0.3s;
 }
+
 .form__radio-input:checked + .form__radio-label .form__radio-button::after {
   opacity: 1;
 }
@@ -705,10 +708,7 @@ main {
   padding: 5px 7px;
   border-radius: 15px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
-}
-
-.card-two {
-  display: block;
+  cursor: pointer;
 }
 
 .card-user-info {
