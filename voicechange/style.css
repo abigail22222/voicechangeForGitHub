@@ -790,7 +790,6 @@ main {
   flex-direction: column;
   justify-content: right;
   align-content: right;
-  cursor: pointer;
 }
 
 .download-text {
@@ -800,11 +799,23 @@ main {
   margin: 8px; /* 下载文本和按钮之间的间距 */
   margin-top: 70px;
 }
+
 .file_path-text {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+.file_path-text p {
   margin: 10px;
   padding: 9px;
   border-radius: 10px;
   background-color: #d1d8e0;
+}
+
+.file_path-text span {
+  margin: 10px;
+  padding: 9px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .btn-file {

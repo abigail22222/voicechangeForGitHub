@@ -109,6 +109,7 @@
                     <div class="download-text">文件路径</div>
                     <div class="file_path-text">
                       <p>{{file_path}}</p>
+                      <span>删除</span>
                     </div>
                   </div>
                 </div>
@@ -338,9 +339,9 @@
           <div class="active-calories">
             <h1 style="align-self: flex-start">Progress Bar</h1>
             <div class="active-calories-container">
-              <div class="box" style="--i: 85%">
+              <div class="box progressBar" style="--i: 0%">
                 <div class="circle">
-                  <h2>{{completion}}<small>%</small></h2>
+                  <h2 class="cih">0<small>%</small></h2>
                 </div>
               </div>
               <div class="calories-content">
@@ -465,13 +466,4 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="instance.js"></script>
   <script src="index.js"></script>
-  <script>
-    // const upload_input = document.querySelector(".upload-input");
-    // //input change 事件监听
-    // upload_input.addEventListener("change", function () {
-    //   // document.getElementById("upload-status").innerText = "上传成功";
-    //   // document.getElementById("upload-icon-sec").style.display = "inline-block"; // 显示成功图标
-    //   // document.getElementById("upload-icon").style.display = "none";
-    // });
-  </script>
 </html>

@@ -9,7 +9,7 @@ const vm = new Vue({
       f0: "false",
       use_diff: "true",
       use_gpu: "true",
-      completion: 85,
+
       classObj: {
         showus: false,
       },
@@ -32,26 +32,39 @@ const vm = new Vue({
       this.classObj.showus = true;
     },
     upload(e) {
-      //   1.获取文件对象
+      let cih = document.querySelector(".cih"),
+        progressBar = document.querySelector(".progressBar"),
+        upload_status = document.getElementById("upload-status"),
+        upload_icon_sec = document.getElementById("upload-icon-sec"),
+        upload_icon = document.getElementById("upload-icon"),
+        completion = 0;
+
       let file = e.target.files[0];
-      //如果没有对象直接返回  测试者可能点击取消上传文件
       if (!file) {
         console.log("没获取到文件，给用户提示");
         alert("请先选择要上传的文件");
         return;
       }
       //    2.上传文件到服务器
-      //  /sing
       let formData = new FormData();
       formData.append("sing", file);
       formData.append("name", file.name);
       console.log("成功拿到formData做请求体");
       instance
-        .post("/sing", formData)
+        .post("/sing", formData, {
+          onUploadProgress(e) {
+            let { loaded, total } = e;
+            completion = parseInt((loaded / total) * 100);
+            // console.log(completion);
+            cih.innerHTML = `${completion}<small>%</small>`;
+            progressBar.setAttribute("style", `--i: ${completion}%`);
+          },
+        })
         .then((data) => {
           if (+data.code === 0) {
-            alert("文件上传成功");
-            console.log("文件上传成功");
+            upload_status.innerText = "上传成功";
+            upload_icon_sec.style.display = "inline-block"; // 显示成功图标
+            upload_icon.style.display = "none";
             this.isFileUpload = true;
             this.file_path = "文件已上传至：" + data.servicePath;
             return;
@@ -60,6 +73,10 @@ const vm = new Vue({
         .catch((reason) => {
           console.log(reason.message);
           alert(`文件上传失败,可能的原因是${reason.message}`);
+        })
+        .finally(() => {
+          cih.innerHTML = `0<small>%</small>`;
+          progressBar.setAttribute("style", `--i: 0%`);
         });
     },
     separate() {
