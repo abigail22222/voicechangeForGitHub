@@ -58,7 +58,7 @@
                 <div class="overlay">
                   <label for="file-upload" class="upload-container">
                     <div class="upload-text" id="upload-status">
-                      点击此处上传音频文件
+                      {{upload_message}}
                     </div>
                     <input
                       type="file"
@@ -75,6 +75,7 @@
                       stroke-width="1.5"
                       stroke="currentColor"
                       class="upload-icon"
+                      :style="uploadIconstyleObj"
                       id="upload-icon"
                     >
                       <path
@@ -90,6 +91,7 @@
                       stroke-width="1.5"
                       stroke="currentColor"
                       class="upload-icon-sec"
+                      :style="upSecIconstyleObj"
                       id="upload-icon-sec"
                     >
                       <path
@@ -106,7 +108,7 @@
                 <img src="img/path.jpg" alt="get file" />
                 <div class="overlay">
                   <div class="download-container">
-                    <div class="download-text">文件路径</div>
+                    <div class="download-text">{{file_message}}</div>
                     <div class="file_path-text">
                       <p>{{file_path}}</p>
                       <span>删除</span>
@@ -339,9 +341,9 @@
           <div class="active-calories">
             <h1 style="align-self: flex-start">Progress Bar</h1>
             <div class="active-calories-container">
-              <div class="box progressBar" style="--i: 0%">
+              <div class="box progressBar" :style="{'--i': progress+'%'}">
                 <div class="circle">
-                  <h2 class="cih">0<small>%</small></h2>
+                  <h2 class="cih">{{progress}}<small>%</small></h2>
                 </div>
               </div>
               <div class="calories-content">

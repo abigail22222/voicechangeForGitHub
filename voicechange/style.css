@@ -774,12 +774,15 @@ main {
   width: 24px;
   height: 24px;
   margin-top: 8px;
+  transition: all 0.3s;
 }
 
 .upload-icon-sec {
   width: 24px;
   height: 24px;
-  display: none; /* 默认隐藏 */
+  transition: all 0.3s;
+
+  /* display: none;  */
 }
 
 /* get result */
@@ -809,6 +812,10 @@ main {
   padding: 9px;
   border-radius: 10px;
   background-color: #d1d8e0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
 }
 
 .file_path-text span {

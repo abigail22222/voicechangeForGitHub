@@ -2,15 +2,23 @@ const vm = new Vue({
   el: "#app",
   data() {
     return {
+      upload_message: "点击上传文件",
+      file_message: "文件路径相关",
       file_path: "raw/example.wav",
+      progress: 0,
       key: 0,
       singerid: "",
       speedup: 50,
       f0: "false",
       use_diff: "true",
       use_gpu: "true",
-
-      classObj: {
+      uploadIconstyleObj: {
+        display: "inline - block",
+      },
+      upSecIconstyleObj: {
+        display: "none",
+      },
+      PopclassObj: {
         showus: false,
       },
       navclassObj: { active: false },
@@ -26,19 +34,12 @@ const vm = new Vue({
       this.navclassObj.active = true;
     },
     closePopup() {
-      this.classObj.showus = false;
+      this.PopclassObj.showus = false;
     },
     openPopup() {
-      this.classObj.showus = true;
+      this.PopclassObj.showus = true;
     },
     upload(e) {
-      let cih = document.querySelector(".cih"),
-        progressBar = document.querySelector(".progressBar"),
-        upload_status = document.getElementById("upload-status"),
-        upload_icon_sec = document.getElementById("upload-icon-sec"),
-        upload_icon = document.getElementById("upload-icon"),
-        completion = 0;
-
       let file = e.target.files[0];
       if (!file) {
         console.log("没获取到文件，给用户提示");
@@ -52,21 +53,18 @@ const vm = new Vue({
       console.log("成功拿到formData做请求体");
       instance
         .post("/sing", formData, {
-          onUploadProgress(e) {
-            let { loaded, total } = e;
-            completion = parseInt((loaded / total) * 100);
-            // console.log(completion);
-            cih.innerHTML = `${completion}<small>%</small>`;
-            progressBar.setAttribute("style", `--i: ${completion}%`);
+          onUploadProgress: (e) => {
+            this.progress = Math.round((e.loaded * 100) / e.total);
           },
         })
         .then((data) => {
           if (+data.code === 0) {
-            upload_status.innerText = "上传成功";
-            upload_icon_sec.style.display = "inline-block"; // 显示成功图标
-            upload_icon.style.display = "none";
+            this.upload_message = "上传成功";
+            this.uploadIconstyleObj.display = "none";
+            this.upSecIconstyleObj.display = "inline-block";
             this.isFileUpload = true;
-            this.file_path = "文件已上传至：" + data.servicePath;
+            this.file_message = "文件已上传到：";
+            this.file_path = data.servicePath;
             return;
           }
         })
@@ -74,10 +72,7 @@ const vm = new Vue({
           console.log(reason.message);
           alert(`文件上传失败,可能的原因是${reason.message}`);
         })
-        .finally(() => {
-          cih.innerHTML = `0<small>%</small>`;
-          progressBar.setAttribute("style", `--i: 0%`);
-        });
+        .finally(() => {});
     },
     separate() {
       if (this.isFileUpload === false) {
@@ -158,7 +153,8 @@ const vm = new Vue({
             alert("转换完成");
             console.log("转换完成");
             this.isTransfercpl = true;
-            this.file_path = "转换结果文件路径：" + data.servicePath;
+            this.file_message = "文件已保存至：";
+            this.file_path = data.servicePath;
             return;
           }
         })
@@ -181,7 +177,8 @@ const vm = new Vue({
             this.prohibited1 = false;
             alert("混音完成,您可以继续上传歌曲文件转换歌声");
             console.log("混音完成,您可以继续上传歌曲文件转换歌声");
-            this.file_path = "混音结果文件路径：" + data.servicePath;
+            this.file_message = "文件已保存至：";
+            this.file_path = data.servicePath;
             return;
           }
         })
