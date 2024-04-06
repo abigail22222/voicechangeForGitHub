@@ -113,6 +113,7 @@
                     <div class="list">
                       <div
                         class="file_path-text"
+                        :class="uplPathClassObj"
                         v-for="(file,index) in files"
                         :key="file.id"
                       >
@@ -120,6 +121,9 @@
                         <span :style="upBtnStyleObj" @click="remove(index)"
                           >删除</span
                         >
+                      </div>
+                      <div class="file_path-text" :style="retuPathStyleObj">
+                        <p>{{file_path}}</p>
                       </div>
                     </div>
 
@@ -352,7 +356,7 @@
           </div>
 
           <div class="active-calories">
-            <h1 style="align-self: flex-start">Progress Bar</h1>
+            <h1 style="align-self: flex-start">Progress of 5 Step</h1>
             <div class="active-calories-container">
               <div class="box progressBar" :style="{'--i': progress+'%'}">
                 <div class="circle">
@@ -360,9 +364,9 @@
                 </div>
               </div>
               <div class="calories-content">
-                <p><span>已上传:</span>2 MB</p>
-                <p><span>文件总大小:</span>10 MB</p>
-                <p><span>文件类型:</span> MP3|WAV</p>
+                <p><span>共有：</span>{{totalCount}} 个文件</p>
+                <p><span>文件总大小：</span>{{totalSize}} MB</p>
+                <p><span>文件类型：</span> MP3|WAV</p>
               </div>
             </div>
           </div>

@@ -863,6 +863,12 @@ main {
 .list::-webkit-scrollbar-corner {
   opacity: 0;
 }
+.hiddenList {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
 
 .file_path-text {
   display: grid;

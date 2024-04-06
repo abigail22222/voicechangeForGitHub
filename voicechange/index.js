@@ -5,7 +5,7 @@ const vm = new Vue({
       files: [],
       upload_message: "点击选择文件",
       file_message: "文件路径相关",
-      file_path: "raw/example.wav",
+      file_path: "",
       progress: 0,
       key: 0,
       singerid: "",
@@ -21,6 +21,12 @@ const vm = new Vue({
       },
       upBtnStyleObj: {
         display: "block",
+      },
+      uplPathClassObj: {
+        hiddenList: false,
+      },
+      retuPathStyleObj: {
+        display: "none",
       },
       PopclassObj: {
         showus: false,
@@ -57,6 +63,8 @@ const vm = new Vue({
         alert("请先选择要上传的文件");
         return;
       }
+      this.uplPathClassObj.hiddenList = false;
+      this.retuPathStyleObj.display = "none";
       //重构files数据结构，生成每个元素的唯一标识
       this.files = files.map((file) => {
         return {
@@ -65,6 +73,7 @@ const vm = new Vue({
           id: this.creatOneNum(),
         };
       });
+      this.progress = 20;
     },
     upload() {
       //已经上传过的文件会因为文件名带有路径而上传失败，后台没有对应的目录
@@ -92,6 +101,7 @@ const vm = new Vue({
       //所有文件都成功上传后
       Promise.all(tempFiles)
         .then(() => {
+          this.progress = 40;
           this.upload_message = "上传成功";
           this.uploadIconstyleObj.display = "none";
           this.upSecIconstyleObj.display = "inline-block";
@@ -101,7 +111,7 @@ const vm = new Vue({
             this.upload_message = "请选择文件";
             this.uploadIconstyleObj.display = "inline-block";
             this.upSecIconstyleObj.display = "none";
-          }, 2000);
+          }, 3000);
           return;
         })
         .catch((reason) => {
@@ -121,6 +131,7 @@ const vm = new Vue({
       try {
         data = await instance.get("/separate");
         if (+data.code === 0) {
+          this.progress = 60;
           alert("人声分离完成");
           this.isSeparatecpl = true;
           return;
@@ -187,8 +198,11 @@ const vm = new Vue({
           if (+data.code === 0) {
             alert("转换完成");
             // console.log("转换完成");
+            this.progress = 80;
             this.isTransfercpl = true;
+            this.uplPathClassObj.hiddenList = true;
             this.file_message = "文件已保存至：";
+            this.retuPathStyleObj.display = "block";
             this.file_path = data.servicePath;
             return;
           }
@@ -207,20 +221,43 @@ const vm = new Vue({
         .get("/combine_audio")
         .then((data) => {
           if (+data.code === 0) {
-            //取消表单禁用
-            this.prohibited = false;
-            this.prohibited1 = false;
+            this.progress = 100;
+            this.uplPathClassObj.hiddenList = true;
             alert("混音完成,您可以继续上传歌曲文件转换歌声");
-            // console.log("混音完成,您可以继续上传歌曲文件转换歌声");
             this.file_message = "文件已保存至：";
+            this.retuPathStyleObj.display = "block";
             this.file_path = data.servicePath;
             return;
           }
         })
         .catch((reason) => {
           // console.log(reason.message);
-          alert(`混音失败,可能的原因是${reason.message}`);
+          alert(`混音失败,可能的原因是${reason.message},请重复开始`);
+          this.progress = 0;
+        })
+        .finally(() => {
+          //取消表单禁用 + 状态归原
+          this.prohibited = false;
+          this.prohibited1 = false;
+          this.isFileUpload = false;
+          this.isSeparatecpl = false;
+          this.isTransfercpl = false;
+          setTimeout(() => {
+            this.progress = 0;
+          }, 1500);
         });
+    },
+  },
+  computed: {
+    totalSize() {
+      let total = 0;
+      this.files.map((item) => {
+        total += item.file.size;
+      });
+      return Math.floor(total / 1024 / 1024);
+    },
+    totalCount() {
+      return this.files.length;
     },
   },
 });
