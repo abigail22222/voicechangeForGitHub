@@ -52,9 +52,7 @@ const vm = new Vue({
       return ram.toString(16).replace(".", "");
     },
     select(e) {
-      // let file = e.target.files[0];
       let files = Array.from(e.target.files);
-      // console.log(files);
       if (files.length === 0) {
         alert("请先选择要上传的文件");
         return;
@@ -67,70 +65,9 @@ const vm = new Vue({
           id: this.creatOneNum(),
         };
       });
-      // console.log(this.files);
-
-      // // loop 上传多文件到服务器
-      // tempFiles = tempFiles.map((item) => {
-      //   let fm = new FormData();
-      //   fm.append("sing", item.file);
-      //   fm.append("name", item.filename);
-      //   return instance.post("/sing", fm).then((data) => {
-      //     if (+data.code === 0) {
-      //       this.file_message = "文件已上传到：";
-      //       item.filename = data.servicePath;
-      //       return;
-      //     }
-      //     return Promise.reject(reason);
-      //   });
-      // });
-
-      // //所有文件都成功上传后
-      // Promise.all(tempFiles)
-      //   .then(() => {
-      //     this.upload_message = "上传成功";
-      //     this.uploadIconstyleObj.display = "none";
-      //     this.upSecIconstyleObj.display = "inline-block";
-      //     this.isFileUpload = true;
-      //     return;
-      //   })
-      //   .catch((reason) => {
-      //     alert(`文件上传失败,可能的原因是${reason.message}`);
-      //   })
-      //   .finally(() => {
-      //     this.isClicked = false;
-      //   });
-
-      //    2.上传单个文件到服务器
-      // let formData = new FormData();
-      // formData.append("sing", file);
-      // formData.append("name", file.name);
-      // console.log("准备发送请求体");
-      // instance
-      //   .post("/sing", formData, {
-      //     onUploadProgress: (e) => {
-      //       this.progress = Math.round((e.loaded * 100) / e.total);
-      //     },
-      //   })
-      //   .then((data) => {
-      //     if (+data.code === 0) {
-      //       this.upload_message = "上传成功";
-      //       this.uploadIconstyleObj.display = "none";
-      //       this.upSecIconstyleObj.display = "inline-block";
-      //       this.isFileUpload = true;
-      //       this.file_message = "文件已上传到：";
-      //       this.file_path = data.servicePath;
-      //       return;
-      //     }
-      //   })
-      //   .catch((reason) => {
-      //     // console.log(reason.message);
-      //     alert(`文件上传失败,可能的原因是${reason.message}`);
-      //   })
-      //   .finally(() => {
-      //     this.isClicked = false;
-      //   });
     },
     upload() {
+      //已经上传过的文件会因为文件名带有路径而上传失败，后台没有对应的目录
       if (this.files.length === 0) {
         alert("请先选择文件再上传");
         return;
@@ -160,6 +97,11 @@ const vm = new Vue({
           this.upSecIconstyleObj.display = "inline-block";
           this.upBtnStyleObj.display = "none";
           this.isFileUpload = true;
+          setTimeout(() => {
+            this.upload_message = "请选择文件";
+            this.uploadIconstyleObj.display = "inline-block";
+            this.upSecIconstyleObj.display = "none";
+          }, 2000);
           return;
         })
         .catch((reason) => {
