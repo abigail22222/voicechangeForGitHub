@@ -24,6 +24,7 @@ const vm = new Vue({
       navclassObj: { active: false },
       prohibited: false,
       prohibited1: false,
+      isClicked: false,
       isFileUpload: false,
       isSeparatecpl: false,
       isTransfercpl: false,
@@ -40,17 +41,22 @@ const vm = new Vue({
       this.PopclassObj.showus = true;
     },
     upload(e) {
+      if (this.isClicked) {
+        console.log("只能点一次哦");
+        return;
+      }
       let file = e.target.files[0];
       if (!file) {
-        console.log("没获取到文件，给用户提示");
+        // console.log("没获取到文件，给用户提示");
         alert("请先选择要上传的文件");
         return;
       }
+      this.isClicked = true;
       //    2.上传文件到服务器
       let formData = new FormData();
       formData.append("sing", file);
       formData.append("name", file.name);
-      console.log("成功拿到formData做请求体");
+      console.log("准备发送请求体");
       instance
         .post("/sing", formData, {
           onUploadProgress: (e) => {
@@ -69,31 +75,31 @@ const vm = new Vue({
           }
         })
         .catch((reason) => {
-          console.log(reason.message);
+          // console.log(reason.message);
           alert(`文件上传失败,可能的原因是${reason.message}`);
         })
-        .finally(() => {});
+        .finally(() => {
+          this.isClicked = false;
+        });
     },
-    separate() {
+    async separate() {
       if (this.isFileUpload === false) {
         alert("请先上传歌曲文件后再点击人声分离");
         return;
       }
       this.prohibited1 = true; //禁用文件表单
       //  /separate
-      instance
-        .get("/separate")
-        .then((data) => {
-          if (+data.code === 0) {
-            alert("人声分离完成");
-            console.log("人声分离完成");
-            this.isSeparatecpl = true;
-            return;
-          }
-        })
-        .catch((reason) => {
-          alert("人声分离失败");
-        });
+      try {
+        data = await instance.get("/separate");
+        if (+data.code === 0) {
+          alert("人声分离完成");
+          this.isSeparatecpl = true;
+          return;
+        }
+        throw data.codeText;
+      } catch (err) {
+        alert("人声分离失败");
+      }
     },
     postForm(formData, paraName, value, url) {
       formData.append(paraName, value);
@@ -107,7 +113,7 @@ const vm = new Vue({
           }
         })
         .catch((reason) => {
-          console.log(reason.message);
+          // console.log(reason.message);
           alert(`获取${paraName}值失败,可能的原因是${reason.message}`);
         });
     },
@@ -151,7 +157,7 @@ const vm = new Vue({
         .then((data) => {
           if (+data.code === 0) {
             alert("转换完成");
-            console.log("转换完成");
+            // console.log("转换完成");
             this.isTransfercpl = true;
             this.file_message = "文件已保存至：";
             this.file_path = data.servicePath;
@@ -159,7 +165,7 @@ const vm = new Vue({
           }
         })
         .catch((reason) => {
-          console.log(reason.message);
+          // console.log(reason.message);
           alert(`转换失败,可能的原因是${reason.message}`);
         });
     },
@@ -176,14 +182,14 @@ const vm = new Vue({
             this.prohibited = false;
             this.prohibited1 = false;
             alert("混音完成,您可以继续上传歌曲文件转换歌声");
-            console.log("混音完成,您可以继续上传歌曲文件转换歌声");
+            // console.log("混音完成,您可以继续上传歌曲文件转换歌声");
             this.file_message = "文件已保存至：";
             this.file_path = data.servicePath;
             return;
           }
         })
         .catch((reason) => {
-          console.log(reason.message);
+          // console.log(reason.message);
           alert(`混音失败,可能的原因是${reason.message}`);
         });
     },
