@@ -2,7 +2,8 @@ const vm = new Vue({
   el: "#app",
   data() {
     return {
-      upload_message: "点击上传文件",
+      files: [],
+      upload_message: "点击选择文件",
       file_message: "文件路径相关",
       file_path: "raw/example.wav",
       progress: 0,
@@ -17,6 +18,9 @@ const vm = new Vue({
       },
       upSecIconstyleObj: {
         display: "none",
+      },
+      upBtnStyleObj: {
+        display: "block",
       },
       PopclassObj: {
         showus: false,
@@ -40,42 +44,125 @@ const vm = new Vue({
     openPopup() {
       this.PopclassObj.showus = true;
     },
-    upload(e) {
-      if (this.isClicked) {
-        console.log("只能点一次哦");
-        return;
-      }
-      let file = e.target.files[0];
-      if (!file) {
-        // console.log("没获取到文件，给用户提示");
+    remove(index) {
+      this.files.splice(index, 1);
+    },
+    creatOneNum() {
+      let ram = Math.random() * new Date();
+      return ram.toString(16).replace(".", "");
+    },
+    select(e) {
+      // let file = e.target.files[0];
+      let files = Array.from(e.target.files);
+      // console.log(files);
+      if (files.length === 0) {
         alert("请先选择要上传的文件");
         return;
       }
+      //重构files数据结构，生成每个元素的唯一标识
+      this.files = files.map((file) => {
+        return {
+          file,
+          filename: file.name,
+          id: this.creatOneNum(),
+        };
+      });
+      // console.log(this.files);
+
+      // // loop 上传多文件到服务器
+      // tempFiles = tempFiles.map((item) => {
+      //   let fm = new FormData();
+      //   fm.append("sing", item.file);
+      //   fm.append("name", item.filename);
+      //   return instance.post("/sing", fm).then((data) => {
+      //     if (+data.code === 0) {
+      //       this.file_message = "文件已上传到：";
+      //       item.filename = data.servicePath;
+      //       return;
+      //     }
+      //     return Promise.reject(reason);
+      //   });
+      // });
+
+      // //所有文件都成功上传后
+      // Promise.all(tempFiles)
+      //   .then(() => {
+      //     this.upload_message = "上传成功";
+      //     this.uploadIconstyleObj.display = "none";
+      //     this.upSecIconstyleObj.display = "inline-block";
+      //     this.isFileUpload = true;
+      //     return;
+      //   })
+      //   .catch((reason) => {
+      //     alert(`文件上传失败,可能的原因是${reason.message}`);
+      //   })
+      //   .finally(() => {
+      //     this.isClicked = false;
+      //   });
+
+      //    2.上传单个文件到服务器
+      // let formData = new FormData();
+      // formData.append("sing", file);
+      // formData.append("name", file.name);
+      // console.log("准备发送请求体");
+      // instance
+      //   .post("/sing", formData, {
+      //     onUploadProgress: (e) => {
+      //       this.progress = Math.round((e.loaded * 100) / e.total);
+      //     },
+      //   })
+      //   .then((data) => {
+      //     if (+data.code === 0) {
+      //       this.upload_message = "上传成功";
+      //       this.uploadIconstyleObj.display = "none";
+      //       this.upSecIconstyleObj.display = "inline-block";
+      //       this.isFileUpload = true;
+      //       this.file_message = "文件已上传到：";
+      //       this.file_path = data.servicePath;
+      //       return;
+      //     }
+      //   })
+      //   .catch((reason) => {
+      //     // console.log(reason.message);
+      //     alert(`文件上传失败,可能的原因是${reason.message}`);
+      //   })
+      //   .finally(() => {
+      //     this.isClicked = false;
+      //   });
+    },
+    upload() {
+      if (this.files.length === 0) {
+        alert("请先选择文件再上传");
+        return;
+      }
+      if (this.isClicked) return;
       this.isClicked = true;
-      //    2.上传文件到服务器
-      let formData = new FormData();
-      formData.append("sing", file);
-      formData.append("name", file.name);
-      console.log("准备发送请求体");
-      instance
-        .post("/sing", formData, {
-          onUploadProgress: (e) => {
-            this.progress = Math.round((e.loaded * 100) / e.total);
-          },
-        })
-        .then((data) => {
+      // loop 上传多文件到服务器
+      tempFiles = this.files.map((item) => {
+        let fm = new FormData();
+        fm.append("sing", item.file);
+        fm.append("name", item.filename);
+        return instance.post("/sing", fm).then((data) => {
           if (+data.code === 0) {
-            this.upload_message = "上传成功";
-            this.uploadIconstyleObj.display = "none";
-            this.upSecIconstyleObj.display = "inline-block";
-            this.isFileUpload = true;
             this.file_message = "文件已上传到：";
-            this.file_path = data.servicePath;
+            item.filename = data.servicePath;
             return;
           }
+          return Promise.reject(reason);
+        });
+      });
+
+      //所有文件都成功上传后
+      Promise.all(tempFiles)
+        .then(() => {
+          this.upload_message = "上传成功";
+          this.uploadIconstyleObj.display = "none";
+          this.upSecIconstyleObj.display = "inline-block";
+          this.upBtnStyleObj.display = "none";
+          this.isFileUpload = true;
+          return;
         })
         .catch((reason) => {
-          // console.log(reason.message);
           alert(`文件上传失败,可能的原因是${reason.message}`);
         })
         .finally(() => {

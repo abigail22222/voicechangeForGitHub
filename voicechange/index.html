@@ -65,8 +65,9 @@
                       id="file-upload"
                       class="upload-input"
                       name="sing"
-                      @change="upload"
+                      @change="select"
                       :disabled="prohibited1"
+                      multiple
                     />
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -109,10 +110,22 @@
                 <div class="overlay">
                   <div class="download-container">
                     <div class="download-text">{{file_message}}</div>
-                    <div class="file_path-text">
-                      <p>{{file_path}}</p>
-                      <span>删除</span>
+                    <div class="list">
+                      <div
+                        class="file_path-text"
+                        v-for="(file,index) in files"
+                        :key="file.id"
+                      >
+                        <p>{{file.filename}}</p>
+                        <span :style="upBtnStyleObj" @click="remove(index)"
+                          >删除</span
+                        >
+                      </div>
                     </div>
+
+                    <button class="btn upload_btn" @click="upload">
+                      上传文件
+                    </button>
                   </div>
                 </div>
               </div>
