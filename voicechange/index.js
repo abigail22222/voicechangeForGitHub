@@ -7,12 +7,14 @@ const vm = new Vue({
       file_message: "文件路径相关",
       file_path: "",
       progress: 0,
+      horiProg: 0,
       key: 0,
       singerid: "",
       speedup: 50,
       f0: "false",
       use_diff: "true",
       use_gpu: "true",
+
       uploadIconstyleObj: {
         display: "inline - block",
       },
@@ -80,24 +82,40 @@ const vm = new Vue({
       if (this.isClicked) return;
       this.isClicked = true;
       // loop 上传多文件到服务器
+      //先拿到所有的list
+      let thumbArr = Array.from(document.querySelectorAll(".progress-thumb"));
+      console.log(thumbArr);
       tempFiles = this.files.map((item) => {
-        let fm = new FormData();
+        let fm = new FormData(),
+          curThumb = thumbArr.find(
+            (div) => div.getAttribute("name") === item.id
+          );
+        // console.log(curThumb);
         fm.append("sing", item.file);
         fm.append("name", item.filename);
-        return instance.post("/sing", fm).then((data) => {
-          if (+data.code === 0) {
-            this.file_message = "文件已上传到：";
-            item.filename = data.servicePath;
-            return;
-          }
-          return Promise.reject(reason);
-        });
+        return instance
+          .post("/sing", fm, {
+            onUploadProgress: (e) => {
+              curThumb.style.width = `${Math.round(
+                (e.loaded * 100) / e.total
+              )}%`;
+            },
+          })
+          .then((data) => {
+            if (+data.code === 0) {
+              this.file_message = "文件已上传到：";
+              item.filename = data.servicePath;
+              return;
+            }
+            return Promise.reject(reason);
+          });
       });
 
       //所有文件都成功上传后
       Promise.all(tempFiles)
         .then(() => {
           this.progress = 40;
+          // alert("success");
           this.upload_message = "上传成功";
           this.uploadIconstyleObj.display = "none";
           this.upSecIconstyleObj.display = "inline-block";
@@ -107,7 +125,7 @@ const vm = new Vue({
             this.upload_message = "请选择文件";
             this.uploadIconstyleObj.display = "inline-block";
             this.upSecIconstyleObj.display = "none";
-          }, 3000);
+          }, 4000);
           return;
         })
         .catch((reason) => {

@@ -100,15 +100,18 @@
                     <div class="download-text">{{file_message}}</div>
                     <div class="list">
                       <div
-                        class="file_path-text"
+                        class="file_path-text filelist"
                         :class="uplPathClassObj"
                         v-for="(file,index) in files"
                         :key="file.id"
                       >
                         <p>{{file.filename}}</p>
-                        <span :style="upBtnStyleObj" @click="remove(index)"
+                        <span :style="upBtnStyleObj" @click="remove(file.id)"
                           >删除</span
                         >
+                        <div class="progress-track">
+                          <div class="progress-thumb" :name="file.id"></div>
+                        </div>
                       </div>
                       <div class="file_path-text" :style="retuPathStyleObj">
                         <p>{{file_path}}</p>
@@ -356,7 +359,7 @@
               <div class="calories-content">
                 <p><span>共有：</span>{{totalCount}} 个文件</p>
                 <p><span>文件总大小：</span>{{totalSize}} MB</p>
-                <p><span>文件类型：</span> MP3|WAV</p>
+                <p><span>文件类型：</span> WAV</p>
               </div>
             </div>
           </div>
