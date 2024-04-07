@@ -31,7 +31,6 @@ const vm = new Vue({
       PopclassObj: {
         showus: false,
       },
-      navclassObj: { active: false },
       prohibited: false,
       prohibited1: false,
       isClicked: false,
@@ -41,9 +40,6 @@ const vm = new Vue({
     };
   },
   methods: {
-    thisNav1() {
-      this.navclassObj.active = true;
-    },
     closePopup() {
       this.PopclassObj.showus = false;
     },

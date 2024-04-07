@@ -6,14 +6,12 @@
     <title>Song conversion model based on ddsp-svc</title>
     <link rel="stylesheet" href="style.css" />
     <link
-      href="https://fonts.loli.net/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext"
+      href="https://fonts.googlefonts.cn/css?family=Nunito:300,400,500,600,700,800,900,1000"
       rel="stylesheet"
-      type="text/css"
     />
     <link
-      href="https://fonts.loli.net/css?family=Lato:900,300&subset=latin-ext"
+      href="https://fonts.googlefonts.cn/css?family=Roboto:300,400,500,700"
       rel="stylesheet"
-      type="text/css"
     />
   </head>
 
@@ -22,26 +20,15 @@
       <nav class="main-menu">
         <h1>web ui</h1>
         <ul>
-          <li class="nav-item" :class="navclassObj" @click="thisNav1">
-            <b></b>
-            <b></b>
-            <a href="./info.html">
-              <ion-icon
-                name="bulb-outline"
-                class="fa fa-house nav-icon"
-              ></ion-icon>
-              <span class="nav-text">说明</span>
-            </a>
-          </li>
           <li class="nav-item active">
             <b></b>
             <b></b>
-            <a href="./index.html">
+            <a href="#">
               <ion-icon
                 name="hourglass-outline"
                 class="fa fa-house nav-icon"
               ></ion-icon>
-              <span class="nav-text">推理</span>
+              <span class="nav-text">推理&nbsp;Inference</span>
             </a>
           </li>
         </ul>
@@ -50,7 +37,7 @@
       <section class="content">
         <div class="left-content">
           <div class="activities">
-            <h1>选择待转换音频&nbsp;📚请先看说明再操作</h1>
+            <h1>Select Audio💡操作前点击此处查看说明</h1>
             <div class="activity-container">
               <div class="image-container img-one">
                 <img src="img/file.jpg" alt="upload file" />
@@ -67,6 +54,7 @@
                       name="sing"
                       @change="select"
                       :disabled="prohibited1"
+                      accept=".wav"
                       multiple
                     />
                     <svg
@@ -138,7 +126,9 @@
 
           <div class="left-bottom">
             <div class="schedule">
-              <h1 class="popup-btn" @click="openPopup">Schedule&nbsp;💡</h1>
+              <h1 class="popup-btn" @click="openPopup">
+                Schedule 💡操作前点击此处查看说明
+              </h1>
               <div class="options">
                 <div class="step-and-activity activity-one">
                   <div class="step">
@@ -193,7 +183,7 @@
               </div>
             </div>
             <div class="personal-bests">
-              <h1>Personal Bests</h1>
+              <h1>Custom 💡操作前点击此处查看说明</h1>
               <div class="personal-bests-container">
                 <div class="best-item box-one">
                   <p>变调</p>
@@ -452,22 +442,9 @@
               Notes on Reasoning
             </h2>
             <h3 class="heading-tertiary u-margin-bottom-small">
-              Important &ndash; Please read these terms before booking
+              Important &ndash; Please read these precautions before booking
             </h3>
-            <p class="popup__text">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quidem
-              voluptas dignissimos, odit sapiente fuga hic. Dignissimos modi et
-              officia nisi non delectus laborum similique, sint, qui excepturi
-              alias magnam voluptatum. Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Ab atque id vitae aliquid similique vel
-              molestias autem repellat officiis iure optio, sapiente, cum
-              assumenda laborum, facilis incidunt saepe cumque? Enim?Lorem ipsum
-              dolor sit amet consectetur, adipisicing elit. Sint fuga eaque
-              consequuntur, obcaecati recusandae, tenetur voluptates
-              necessitatibus quos laudantium natus maxime illum corrupti
-              repellat voluptatibus labore aliquid, nemo officiis! Beatae. Lorem
-              ipsum dolor sit amet consectetur adipisicing elit.
-            </p>
+            <p class="popup__text"></p>
           </div>
         </div>
       </div>
