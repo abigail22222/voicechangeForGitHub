@@ -38,13 +38,17 @@
         <div class="left-content">
           <div class="activities">
             <h1 class="popup-btn" @click="openFilePopup">
-              Select Audio💡操作前点击此处查看说明
+              Select Audio📁 &nbsp;查看说明
             </h1>
             <div class="activity-container">
-              <div class="image-container img-one">
+              <div
+                class="image-container img-one"
+                @drop.prevent="dropfiles"
+                @dragover.prevent="dragfiles"
+              >
                 <img src="img/file.jpg" alt="upload file" />
 
-                <div class="overlay">
+                <div class="overlay filetip">
                   <label for="file-upload" class="upload-container">
                     <div class="upload-text" id="upload-status">
                       {{upload_message}}
@@ -132,12 +136,12 @@
           <div class="left-bottom">
             <div class="schedule">
               <h1 class="popup-btn" @click="openSchedulePopup">
-                Schedule 💡操作前点击此处查看说明
+                Schedule📝 &nbsp;查看说明
               </h1>
-              <div class="options">
+              <div class="steps">
                 <div class="step-and-activity activity-one">
                   <div class="step">
-                    <h1>1</h1>
+                    <h1 class="tip1">1</h1>
                     <p>split</p>
                   </div>
                   <div class="activity">
@@ -154,7 +158,7 @@
                 </div>
 
                 <div class="step-and-activity activity-two">
-                  <div class="step">
+                  <div class="step tip2">
                     <h1>2</h1>
                     <p>in</p>
                   </div>
@@ -168,8 +172,8 @@
                   <button class="btn" @click="start_convert">start</button>
                 </div>
 
-                <div class="step-and-activity activity-four">
-                  <div class="step">
+                <div class="step-and-activity activity-three">
+                  <div class="step tip3">
                     <h1>4</h1>
                     <p>merge</p>
                   </div>
@@ -188,7 +192,7 @@
               </div>
             </div>
             <div class="custom">
-              <h1 class="popup-btn" @click="openCustomPopup">Custom 💡</h1>
+              <h1 class="popup-btn" @click="openCustomPopup">Custom 🪄</h1>
               <div class="custom-container">
                 <div class="custom-item box-one">
                   <p class="bubble1">变调</p>
@@ -450,14 +454,13 @@
               Important &ndash; Please read these precautions before starting
             </h3>
             <p class="popup__text">
-              1.点击人声分离板块下的start按钮，可以将您上传的歌曲的人声和背景音乐分离；在点击start按钮之前，请确保您的文件已经上传至服务器。
+              1.支持单文件和多文件上传，上传成功后有成功提示图标和文字，并且显示上传到服务器的文件路径
             </p>
             <p class="popup__text">
-              2.点击开始转换板块下的start按钮，可以将人声分离后的人声通过AI推理，转换成您在Personal
-              Best区域选择的音色。转换完成后，文件路径相关面板会显示程序输出音频所在的文件路径。
+              2.在点击上传文件之前，您可以点击删除按钮删除选择的文件
             </p>
             <p class="popup__text">
-              3.点击混音板块下的start按钮，可以将输出的转换后的人声与分离好的背景音乐混音，从而得到一首AI&nbsp;Cover的完整作品。
+              3.在开始分离和混音结束之间您无法继续上传文件到服务端
             </p>
           </div>
         </div>

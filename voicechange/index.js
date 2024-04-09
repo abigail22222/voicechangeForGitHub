@@ -3,7 +3,7 @@ const vm = new Vue({
   data() {
     return {
       files: [],
-      upload_message: "点击选择文件",
+      upload_message: "拖拽或者点击选择文件",
       file_message: "文件路径相关",
       file_path: "",
       progress: 0,
@@ -73,12 +73,21 @@ const vm = new Vue({
       let ram = Math.random() * new Date();
       return ram.toString(16).replace(".", "");
     },
-    select(e) {
-      let files = Array.from(e.target.files);
+    getfiles(argfiles) {
+      let files = Array.from(argfiles);
       if (files.length === 0) {
         alert("请先选择要上传的文件");
         return;
       }
+
+      for (var file of files) {
+        if (!/(WAV)/i.test(file.type)) {
+          alert("只允许上传WAV格式的音频文件!");
+          return;
+        }
+      }
+
+      console.log(this.files);
       this.uplPathClassObj.hiddenList = false;
       this.retuPathStyleObj.display = "none";
       //重构files数据结构，生成每个元素的唯一标识
@@ -89,7 +98,18 @@ const vm = new Vue({
           id: this.creatOneNum(),
         };
       });
+      console.log(this.files);
       this.progress = 20;
+    },
+    dragfiles() {},
+    dropfiles(e) {
+      // let files = Array.from(e.dataTransfer.files);
+
+      this.getfiles(e.dataTransfer.files);
+    },
+    select(e) {
+      // console.log(e.target.files);
+      this.getfiles(e.target.files);
     },
     upload() {
       //已经上传过的文件会因为文件名带有路径而上传失败，后台没有对应的目录

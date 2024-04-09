@@ -207,6 +207,28 @@ main {
   grid-area: 1 / 1 / 3 / 4;
 }
 
+.filetip::after {
+  content: "💡 注意：音频文件的格式只能为WAV，支持多选";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9eceffc;
+  width: 224px;
+  height: 59px;
+  position: absolute;
+  top: 21px;
+  right: 313px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+.img-one:hover .filetip::after {
+  opacity: 1;
+  visibility: visible;
+}
+
 .img-two {
   grid-area: 1 / 4 / 3 / 6;
 }
@@ -270,11 +292,12 @@ main {
   font-weight: 700;
 }
 
-.options {
+.steps {
   margin-top: 10px;
 }
 
 .step-and-activity {
+  position: relative;
   display: grid;
   grid-template-columns: 15% 55% 25%;
   align-items: center;
@@ -301,16 +324,78 @@ main {
   background-image: linear-gradient(240deg, #e5a243ab 0%, #f7f7aa 90%);
 }
 
-/* .activity-three {
-  background-color: #ecfcc376;
-  background-image: linear-gradient(240deg, #97e7d1 0%, #ecfcc3 100%);
-} */
-
-.activity-four {
+.activity-three {
   background-color: #e6a7c3b5;
   background-image: linear-gradient(240deg, #fc8ebe 0%, #fce5c3 100%);
 }
 
+.tip1::after {
+  content: "💡 注意:在点击start按钮之前，请确保您的文件已经上传至服务器";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9eceffc;
+  width: 224px;
+  height: 61px;
+  position: absolute;
+  top: -44px;
+  right: -342px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.activity-one:hover .tip1::after {
+  opacity: 1;
+  visibility: visible;
+}
+.tip2::after {
+  content: "💡 注意:在点击start按钮之前，请确保您已经填写说话人id";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9eceffc;
+  width: 224px;
+  height: 61px;
+  position: absolute;
+  top: -44px;
+  right: -342px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.activity-two:hover .tip2::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tip3::after {
+  content: "💡 将转换后的人声与分离好的背景音乐混音";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9eceffc;
+  width: 224px;
+  height: 61px;
+  position: absolute;
+  top: -44px;
+  right: -342px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.activity-three:hover .tip3::after {
+  opacity: 1;
+  visibility: visible;
+}
 .step {
   display: flex;
   flex-direction: column;
@@ -420,6 +505,7 @@ main {
 }
 
 .custom-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -437,10 +523,8 @@ main {
   padding: 15px;
   font-size: 1rem;
   font-weight: 700;
-  position: relative;
 }
 .box-two {
-  position: relative;
   align-items: center;
   justify-content: flex-start;
   font-size: 1rem;
@@ -451,7 +535,6 @@ main {
 }
 
 .box-three {
-  position: relative;
   align-items: center;
   justify-content: flex-start;
   font-size: 1rem;
@@ -462,7 +545,6 @@ main {
 }
 
 .box-four {
-  position: relative;
   align-items: center;
   justify-content: center;
   font-size: 1rem;
@@ -599,7 +681,7 @@ main {
 }
 
 .bubble2::after {
-  content: "💡 注意:想用谭美姿的声音请输入‘tmz’，其它欧美歌手不要输入姓氏；推荐您通过鼠标左键单击右侧‘Sound Color’中的人物盒子来填入该栏";
+  content: "💡 注意：此项为必填；想用谭美姿的声音请输入‘tmz’，其它欧美歌手不要输入姓氏；推荐您通过鼠标左键单击右侧‘Sound Color’中的人物盒子来填入该栏";
   font-size: 13px;
   font-weight: 400;
   padding: 12px;
@@ -622,43 +704,89 @@ main {
 }
 
 .bubble3::after {
-  content: "💡 浅扩散模型的加速倍数与训练时的浅扩散步数有关，由于其至少运行一次所以加速倍数不能超过50";
+  content: "💡 浅扩散模型的加速倍数与训练时的浅扩散步数有关，由于其至少运行一次所以加速倍数不能超过50；默认值是50";
   font-size: 13px;
   font-weight: 400;
   padding: 12px;
   background-color: #e9ecefed;
-  width: 180px;
+  width: 195px;
   height: 95px;
   position: absolute;
-  top: -72px;
-  right: 37px;
+  top: -77px;
+  right: 28px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
   transition: all 0.3s ease 0s;
   opacity: 0;
   visibility: hidden;
 }
-
 .box-three:hover .bubble3::after {
   opacity: 1;
   visibility: visible;
 }
+
 .bubble4::after {
-  content: "💡 注意:想用谭美姿的声音请输入‘tmz’，其它欧美歌手不要输入姓氏；推荐您通过鼠标左键单击右侧‘Sound Color’中的人物盒子来填入该栏";
+  content: "💡 男女声转换时使用可以解决音调失真问题；默认不使用(false)";
   font-size: 13px;
   font-weight: 400;
   padding: 12px;
-  background-color: #e9ecefed;
-  width: 224px;
-  height: 110px;
+  background-color: #e9ecefb0;
+  width: 175px;
+  height: 77px;
   position: absolute;
-  top: -62px;
-  right: 171px;
+  top: -52px;
+  right: 197px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
   transition: all 0.3s ease 0s;
   opacity: 0;
   visibility: hidden;
+}
+.bool_one:hover .bubble4::after {
+  opacity: 1;
+  visibility: visible;
+}
+.bubble5::after {
+  content: "💡 选择是否使用浅扩散模型；默认使用(true)";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9ecefb0;
+  width: 175px;
+  height: 63px;
+  position: absolute;
+  top: 38px;
+  right: 212px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+.bool_two:hover .bubble5::after {
+  opacity: 1;
+  visibility: visible;
+}
+.bubble6::after {
+  content: "💡 当设备允许时使用GPU可以获得更快体验；默认使用(true)";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9ecefb0;
+  width: 175px;
+  height: 78px;
+  position: absolute;
+  top: 95px;
+  right: 218px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+.bool_three:hover .bubble6::after {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* RIGHT CONTENT */
