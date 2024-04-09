@@ -959,7 +959,7 @@ main {
 
 /* POPUP */
 .u-margin-bottom-small {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .heading-secondary {
@@ -1008,32 +1008,33 @@ main {
   width: 75%;
   background-color: #fff;
   border-radius: 3px;
-  display: table;
-  /* display: grid;
-  grid-template-columns: 1fr 3fr; */
+  /* display: table; */
+  display: grid;
+  grid-template-columns: 2fr 3fr;
   overflow: hidden;
   position: relative;
 }
 .popup__left {
-  width: 33.33333333%;
+  width: 80%;
   display: table-cell;
 }
 .popup__right {
-  width: 66.6666666667%;
+  width: 100%;
   display: table-cell;
   vertical-align: middle;
   padding: 30px 50px;
+  align-self: center;
 }
 .popup__img {
   display: block;
-  width: 107%;
+  width: 117%;
 }
 .popup__text {
   font-size: 1rem;
-  margin-bottom: 4rem;
-  column-count: 2;
+  margin-bottom: 2rem;
+  /* column-count: 2;
   column-gap: 4rem;
-  column-rule: 1px solid #ccc;
+  column-rule: 1px solid #ccc; */
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
