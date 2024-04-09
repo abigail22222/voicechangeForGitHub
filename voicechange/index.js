@@ -30,7 +30,13 @@ const vm = new Vue({
       retuPathStyleObj: {
         display: "none",
       },
-      PopclassObj: {
+      Popclass1Obj: {
+        showus: false,
+      },
+      Popclass2Obj: {
+        showus: false,
+      },
+      Popclass3Obj: {
         showus: false,
       },
       prohibited: false,
@@ -42,11 +48,23 @@ const vm = new Vue({
     };
   },
   methods: {
-    closePopup() {
-      this.PopclassObj.showus = false;
+    closeFilePopup() {
+      this.Popclass1Obj.showus = false;
     },
-    openPopup() {
-      this.PopclassObj.showus = true;
+    openFilePopup() {
+      this.Popclass1Obj.showus = true;
+    },
+    closeSchedulePopup() {
+      this.Popclass2Obj.showus = false;
+    },
+    openSchedulePopup() {
+      this.Popclass2Obj.showus = true;
+    },
+    closeCustomPopup() {
+      this.Popclass3Obj.showus = false;
+    },
+    openCustomPopup() {
+      this.Popclass3Obj.showus = true;
     },
     remove(index) {
       this.files.splice(index, 1);

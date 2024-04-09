@@ -37,7 +37,9 @@
       <section class="content">
         <div class="left-content">
           <div class="activities">
-            <h1>Select Audio💡操作前点击此处查看说明</h1>
+            <h1 class="popup-btn" @click="openFilePopup">
+              Select Audio💡操作前点击此处查看说明
+            </h1>
             <div class="activity-container">
               <div class="image-container img-one">
                 <img src="img/file.jpg" alt="upload file" />
@@ -129,7 +131,7 @@
 
           <div class="left-bottom">
             <div class="schedule">
-              <h1 class="popup-btn" @click="openPopup">
+              <h1 class="popup-btn" @click="openSchedulePopup">
                 Schedule 💡操作前点击此处查看说明
               </h1>
               <div class="options">
@@ -185,11 +187,11 @@
                 </div>
               </div>
             </div>
-            <div class="personal-bests">
-              <h1>Custom 💡操作前点击此处查看说明</h1>
-              <div class="personal-bests-container">
-                <div class="best-item box-one">
-                  <p>变调</p>
+            <div class="custom">
+              <h1 class="popup-btn" @click="openCustomPopup">Custom 💡</h1>
+              <div class="custom-container">
+                <div class="custom-item box-one">
+                  <p class="bubble1">变调</p>
                   <div class="slider-container">
                     <input
                       v-model="key"
@@ -205,8 +207,8 @@
                     </p>
                   </div>
                 </div>
-                <div class="best-item box-two">
-                  <p>说话人id</p>
+                <div class="custom-item box-two">
+                  <p class="bubble2">说话人id</p>
                   <div class="form__group u-margin-left-large">
                     <input
                       v-model="singerid"
@@ -220,8 +222,8 @@
                     <label for="id" class="form__label">说话人id</label>
                   </div>
                 </div>
-                <div class="best-item box-three">
-                  <p>加速倍数</p>
+                <div class="custom-item box-three">
+                  <p class="bubble3">加速倍数</p>
                   <div class="form__group u-margin-left-large">
                     <input
                       v-model="speedup"
@@ -237,9 +239,9 @@
                     >
                   </div>
                 </div>
-                <div class="best-item box-four">
-                  <div class="true_or_false">
-                    <p>基频校准</p>
+                <div class="custom-item box-four">
+                  <div class="true_or_false bool_one">
+                    <p class="bubble4">基频偏移</p>
                     <div class="form__group">
                       <div class="form__radio-group">
                         <input
@@ -271,8 +273,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="true_or_false">
-                    <p class="u-font-weight">USE_Diff</p>
+                  <div class="true_or_false bool_two">
+                    <p class="u-font-weight bubble5">USE_Diff</p>
                     <div class="form__group">
                       <div class="form__radio-group">
                         <input
@@ -304,8 +306,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="true_or_false">
-                    <p class="u-font-weight">USE GPU</p>
+                  <div class="true_or_false bool_three">
+                    <p class="u-font-weight bubble6">USE GPU</p>
                     <div class="form__group">
                       <div class="form__radio-group">
                         <input
@@ -365,7 +367,7 @@
           </div>
 
           <div class="friends-activity">
-            <h1>Sound Color 5种可选音色</h1>
+            <h1>Sound Color</h1>
             <div class="card-container">
               <div class="card" @click="singerid = 'trump'">
                 <div class="card-user-info">
@@ -428,7 +430,7 @@
         </div>
       </section>
 
-      <div class="popup" :class="PopclassObj">
+      <div class="popup" :class="Popclass1Obj">
         <div class="popup__content">
           <div class="popup__left">
             <img src="img/popup-1.jpg" alt="popup img 1" class="popup__img" />
@@ -438,11 +440,74 @@
             <ion-icon
               name="close-outline"
               class="popup__close"
-              @click="closePopup"
+              @click="closeFilePopup"
             ></ion-icon>
 
             <h2 class="heading-secondary u-margin-bottom-small">
-              Notes on Reasoning
+              Notes on File
+            </h2>
+            <h3 class="heading-tertiary u-margin-bottom-small">
+              Important &ndash; Please read these precautions before starting
+            </h3>
+            <p class="popup__text">
+              1.点击人声分离板块下的start按钮，可以将您上传的歌曲的人声和背景音乐分离；在点击start按钮之前，请确保您的文件已经上传至服务器。
+            </p>
+            <p class="popup__text">
+              2.点击开始转换板块下的start按钮，可以将人声分离后的人声通过AI推理，转换成您在Personal
+              Best区域选择的音色。转换完成后，文件路径相关面板会显示程序输出音频所在的文件路径。
+            </p>
+            <p class="popup__text">
+              3.点击混音板块下的start按钮，可以将输出的转换后的人声与分离好的背景音乐混音，从而得到一首AI&nbsp;Cover的完整作品。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="popup" :class="Popclass2Obj">
+        <div class="popup__content">
+          <div class="popup__left">
+            <img src="img/popup-1.jpg" alt="popup img 1" class="popup__img" />
+            <img src="img/popup-2.jpg" alt="popup img 2" class="popup__img" />
+          </div>
+          <div class="popup__right">
+            <ion-icon
+              name="close-outline"
+              class="popup__close"
+              @click="closeSchedulePopup"
+            ></ion-icon>
+
+            <h2 class="heading-secondary u-margin-bottom-small">
+              Notes on Schedule
+            </h2>
+            <h3 class="heading-tertiary u-margin-bottom-small">
+              Important &ndash; Please read these precautions before starting
+            </h3>
+            <p class="popup__text">
+              1.点击人声分离板块下的start按钮，可以将您上传的歌曲的人声和背景音乐分离；在点击start按钮之前，请确保您的文件已经上传至服务器。
+            </p>
+            <p class="popup__text">
+              2.点击开始转换板块下的start按钮，可以将人声分离后的人声转换成您选择的音色。转换完成后，文件路径相关面板会显示程序输出音频所在的文件路径；在点击start按钮之前，请确保Custom下说话人id填入正确的值
+            </p>
+            <p class="popup__text">
+              3.点击混音板块下的start按钮，可以将转换后的人声与分离好的背景音乐混音，从而得到一首AI&nbsp;Cover的完整作品。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="popup" :class="Popclass3Obj">
+        <div class="popup__content">
+          <div class="popup__left">
+            <img src="img/popup-1.jpg" alt="popup img 1" class="popup__img" />
+            <img src="img/popup-2.jpg" alt="popup img 2" class="popup__img" />
+          </div>
+          <div class="popup__right">
+            <ion-icon
+              name="close-outline"
+              class="popup__close"
+              @click="closeCustomPopup"
+            ></ion-icon>
+
+            <h2 class="heading-secondary u-margin-bottom-small">
+              Notes on Custom
             </h2>
             <h3 class="heading-tertiary u-margin-bottom-small">
               Important &ndash; Please read these precautions before starting

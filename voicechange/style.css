@@ -258,7 +258,7 @@ main {
   gap: 40px;
 }
 
-/* WEEKLY SCHEDULE */
+/* SCHEDULE */
 .schedule {
   display: flex;
   flex-direction: column;
@@ -284,7 +284,9 @@ main {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
   padding: 13px 15px;
 }
-
+.activity {
+  border-left: 3px solid #484d53;
+}
 .activity-one {
   background-color: rgb(124, 136, 224, 0.5);
   background-image: linear-gradient(
@@ -326,10 +328,6 @@ main {
   font-size: 0.9rem;
   font-weight: 600;
   transform: translateY(-3px);
-}
-
-.activity {
-  border-left: 3px solid #484d53;
 }
 
 .participants {
@@ -393,19 +391,27 @@ main {
   }
 }
 
-/* PERSONAL BESTS */
-
-.personal-bests {
+/* CUSTOM */
+.u-margin-left-large {
+  margin-left: 20px;
+}
+.u-margin-left-small {
+  margin-left: 5px;
+}
+.u-font-weight {
+  font-weight: 800;
+}
+.custom {
   display: block;
 }
 
-.personal-bests h1 {
+.custom h1 {
   margin-top: 20px;
   font-size: 1.3rem;
   font-weight: 700;
 }
 
-.personal-bests-container {
+.custom-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 150px);
@@ -413,7 +419,7 @@ main {
   margin-top: 10px;
 }
 
-.best-item {
+.custom-item {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -431,20 +437,56 @@ main {
   padding: 15px;
   font-size: 1rem;
   font-weight: 700;
+  position: relative;
+}
+.box-two {
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px;
+  grid-area: 2 / 1 / 3 / 2;
+  background-color: rgba(238, 184, 114, 0.6);
 }
 
+.box-three {
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px;
+  grid-area: 1 / 2 / 2 / 3;
+  background-color: rgba(151, 231, 209, 0.6);
+}
+
+.box-four {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px;
+  grid-area: 2 / 2 / 3 / 3;
+  background-color: rgba(252, 229, 195, 0.6);
+}
 .clider-text {
   margin-top: 5px;
 }
-
-.u-margin-left-large {
-  margin-left: 20px;
+.box-two p {
+  margin-top: 15px;
 }
-.u-margin-left-small {
-  margin-left: 5px;
+.box-three p {
+  margin-top: 17px;
 }
-.u-font-weight {
-  font-weight: 800;
+.box-four p {
+  align-self: center;
+}
+.true_or_false {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 25px;
 }
 
 .form__input {
@@ -533,49 +575,90 @@ main {
   opacity: 1;
 }
 
-.box-two {
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 10px;
-  grid-area: 2 / 1 / 3 / 2;
-  background-color: rgba(238, 184, 114, 0.6);
+.bubble1::after {
+  content: "💡 您可以通过升、降K个半音来解决音调过高或过低时对应部分的声音会变得沙哑或消失的问题";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9ecefed;
+  width: 180px;
+  height: 95px;
+  position: absolute;
+  top: -72px;
+  right: 37px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
 }
 
-.box-three {
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 10px;
-  grid-area: 1 / 2 / 2 / 3;
-  background-color: rgba(151, 231, 209, 0.6);
+.box-one:hover .bubble1::after {
+  opacity: 1;
+  visibility: visible;
 }
 
-.box-four {
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 10px;
-  grid-area: 2 / 2 / 3 / 3;
-  background-color: rgba(252, 229, 195, 0.6);
+.bubble2::after {
+  content: "💡 注意:想用谭美姿的声音请输入‘tmz’，其它欧美歌手不要输入姓氏；推荐您通过鼠标左键单击右侧‘Sound Color’中的人物盒子来填入该栏";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9ecefed;
+  width: 224px;
+  height: 110px;
+  position: absolute;
+  top: -62px;
+  right: 171px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
 }
 
-.box-two p {
-  margin-top: 15px;
+.box-two:hover .bubble2::after {
+  opacity: 1;
+  visibility: visible;
 }
-.box-three p {
-  margin-top: 17px;
+
+.bubble3::after {
+  content: "💡 浅扩散模型的加速倍数与训练时的浅扩散步数有关，由于其至少运行一次所以加速倍数不能超过50";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9ecefed;
+  width: 180px;
+  height: 95px;
+  position: absolute;
+  top: -72px;
+  right: 37px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
 }
-.box-four p {
-  align-self: center;
+
+.box-three:hover .bubble3::after {
+  opacity: 1;
+  visibility: visible;
 }
-.true_or_false {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 25px;
+.bubble4::after {
+  content: "💡 注意:想用谭美姿的声音请输入‘tmz’，其它欧美歌手不要输入姓氏；推荐您通过鼠标左键单击右侧‘Sound Color’中的人物盒子来填入该栏";
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px;
+  background-color: #e9ecefed;
+  width: 224px;
+  height: 110px;
+  position: absolute;
+  top: -62px;
+  right: 171px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* RIGHT CONTENT */
