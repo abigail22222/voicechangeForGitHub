@@ -60,7 +60,6 @@
                       name="sing"
                       @change="select"
                       :disabled="prohibited1"
-                      accept=".wav"
                       multiple
                     />
                     <svg
@@ -192,7 +191,7 @@
               </div>
             </div>
             <div class="custom">
-              <h1 class="popup-btn" @click="openCustomPopup">Custom 🪄</h1>
+              <h1>Custom 🪄</h1>
               <div class="custom-container">
                 <div class="custom-item box-one">
                   <p class="bubble1">变调</p>
@@ -492,38 +491,6 @@
             </p>
             <p class="popup__text">
               3.点击混音板块下的start按钮，可以将转换后的人声与分离好的背景音乐混音，从而得到一首AI&nbsp;Cover的完整作品。
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="popup" :class="Popclass3Obj">
-        <div class="popup__content">
-          <div class="popup__left">
-            <img src="img/popup-1.jpg" alt="popup img 1" class="popup__img" />
-            <img src="img/popup-2.jpg" alt="popup img 2" class="popup__img" />
-          </div>
-          <div class="popup__right">
-            <ion-icon
-              name="close-outline"
-              class="popup__close"
-              @click="closeCustomPopup"
-            ></ion-icon>
-
-            <h2 class="heading-secondary u-margin-bottom-small">
-              Notes on Custom
-            </h2>
-            <h3 class="heading-tertiary u-margin-bottom-small">
-              Important &ndash; Please read these precautions before starting
-            </h3>
-            <p class="popup__text">
-              1.点击人声分离板块下的start按钮，可以将您上传的歌曲的人声和背景音乐分离；在点击start按钮之前，请确保您的文件已经上传至服务器。
-            </p>
-            <p class="popup__text">
-              2.点击开始转换板块下的start按钮，可以将人声分离后的人声通过AI推理，转换成您在Personal
-              Best区域选择的音色。转换完成后，文件路径相关面板会显示程序输出音频所在的文件路径。
-            </p>
-            <p class="popup__text">
-              3.点击混音板块下的start按钮，可以将输出的转换后的人声与分离好的背景音乐混音，从而得到一首AI&nbsp;Cover的完整作品。
             </p>
           </div>
         </div>

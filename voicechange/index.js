@@ -36,9 +36,7 @@ const vm = new Vue({
       Popclass2Obj: {
         showus: false,
       },
-      Popclass3Obj: {
-        showus: false,
-      },
+
       prohibited: false,
       prohibited1: false,
       isClicked: false,
@@ -60,12 +58,7 @@ const vm = new Vue({
     openSchedulePopup() {
       this.Popclass2Obj.showus = true;
     },
-    closeCustomPopup() {
-      this.Popclass3Obj.showus = false;
-    },
-    openCustomPopup() {
-      this.Popclass3Obj.showus = true;
-    },
+
     remove(index) {
       this.files.splice(index, 1);
     },
@@ -78,13 +71,6 @@ const vm = new Vue({
       if (files.length === 0) {
         alert("请先选择要上传的文件");
         return;
-      }
-
-      for (var file of files) {
-        if (!/(WAV)/i.test(file.type)) {
-          alert("只允许上传WAV格式的音频文件!");
-          return;
-        }
       }
 
       console.log(this.files);
