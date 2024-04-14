@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Song conversion model based on ddsp-svc</title>
+    <link rel="icon" href="img/favicon-512.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googlefonts.cn/css?family=Nunito:300,400,500,600,700,800,900,1000"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googlefonts.cn/css?family=Roboto:300,400,500,700"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <main id="app" class="board">
+      <nav class="main-menu">
+        <h1>音浪小队的UI</h1>
+        <ul>
+          <li class="nav-item active">
+            <b></b>
+            <b></b>
+            <a href="#">
+              <ion-icon
+                name="hourglass-outline"
+                class="fa fa-house nav-icon"
+              ></ion-icon>
+              <span class="nav-text">推理&nbsp;Inference</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <section class="content">
+        <div class="left-content">
+          <div class="activities">
+            <h1 class="popup-btn" @click="openFilePopup">
+              Select Audio📁 &nbsp;查看说明
+            </h1>
+            <div class="activity-container">
+              <div
+                class="image-container img-one"
+                @drop.prevent="dropfiles"
+                @dragover.prevent="dragfiles"
+              >
+                <img src="img/file.jpg" alt="upload file" />
+
+                <div class="overlay filetip">
+                  <label for="file-upload" class="upload-container">
+                    <div class="upload-text" id="upload-status">
+                      {{upload_message}}
+                    </div>
+                    <input
+                      type="file"
+                      id="file-upload"
+                      class="upload-input"
+                      name="sing"
+                      @change="select"
+                      :disabled="prohibited1"
+                      multiple
+                    />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="upload-icon"
+                      :style="uploadIconstyleObj"
+                      id="upload-icon"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+                      />
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="upload-icon-sec"
+                      :style="upSecIconstyleObj"
+                      id="upload-icon-sec"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                  </label>
+                </div>
+              </div>
+
+              <div class="image-container img-two">
+                <img src="img/path.jpg" alt="get file" />
+                <div class="overlay">
+                  <div class="download-container">
+                    <div class="download-text">{{file_message}}</div>
+                    <div class="list">
+                      <div
+                        class="file_path-text filelist"
+                        :class="uplPathClassObj"
+                        v-for="(file,index) in files"
+                        :key="file.id"
+                      >
+                        <p>{{file.filename}}</p>
+                        <span :style="upBtnStyleObj" @click="remove(file.id)"
+                          >删除</span
+                        >
+                        <div class="progress-track">
+                          <div class="progress-thumb" :name="file.id"></div>
+                        </div>
+                      </div>
+                      <div class="file_path-text" :style="retuPathStyleObj">
+                        <p>{{file_path}}</p>
+                      </div>
+                    </div>
+
+                    <button class="btn upload_btn" @click="upload">
+                      上传文件
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="left-bottom">
+            <div class="schedule">
+              <h1 class="popup-btn" @click="openSchedulePopup">
+                Schedule📝 &nbsp;查看说明
+              </h1>
+              <div class="steps">
+                <div class="step-and-activity activity-one">
+                  <div class="step">
+                    <h1 class="tip1">1</h1>
+                    <p>split</p>
+                  </div>
+                  <div class="activity">
+                    <h2>人声分离</h2>
+                    <div class="participants">
+                      <img src="img/ts.jpg" style="--i: 1" alt="" />
+                      <img src="img/tlp.jpg" style="--i: 2" alt="" />
+                      <img src="img/tan.jpg" style="--i: 3" alt="" />
+                      <img src="img/Justin-Bieber.jpg" style="--i: 4" alt="" />
+                      <img src="img/adele.jpg" style="--i: 5" alt="" />
+                    </div>
+                  </div>
+                  <button class="btn" @click="separate">start</button>
+                </div>
+
+                <div class="step-and-activity activity-two">
+                  <div class="step tip2">
+                    <h1>2</h1>
+                    <p>in</p>
+                  </div>
+                  <div class="activity">
+                    <h2>开始转换</h2>
+                    <div class="participants">
+                      <img src="img/ts.jpg" style="--i: 1" alt="" />
+                      <img src="img/adele.jpg" style="--i: 2" alt="" />
+                    </div>
+                  </div>
+                  <button class="btn" @click="start_convert">start</button>
+                </div>
+
+                <div class="step-and-activity activity-three">
+                  <div class="step tip3">
+                    <h1>4</h1>
+                    <p>merge</p>
+                  </div>
+                  <div class="activity">
+                    <h2>混音</h2>
+                    <div class="participants">
+                      <img src="img/ts.jpg" style="--i: 1" alt="" />
+                      <img src="img/tlp.jpg" style="--i: 2" alt="" />
+                      <img src="img/tan.jpg" style="--i: 3" alt="" />
+                      <img src="img/Justin-Bieber.jpg" style="--i: 4" alt="" />
+                      <img src="img/adele.jpg" style="--i: 5" alt="" />
+                    </div>
+                  </div>
+                  <button class="btn" @click="combine_audio">start</button>
+                </div>
+              </div>
+            </div>
+            <div class="custom">
+              <h1>Custom 🪄</h1>
+              <div class="custom-container">
+                <div class="custom-item box-one">
+                  <p class="bubble1">变调</p>
+                  <div class="slider-container">
+                    <input
+                      v-model="key"
+                      :disabled="prohibited"
+                      type="range"
+                      min="-12"
+                      max="12"
+                      class="slider"
+                      id="mySlider"
+                    />
+                    <p class="clider-text">
+                      Value: <span id="sliderValue">{{key}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="custom-item box-two">
+                  <p class="bubble2">说话人id</p>
+                  <div class="form__group u-margin-left-large">
+                    <input
+                      v-model="singerid"
+                      :disabled="prohibited"
+                      type="text"
+                      class="form__input"
+                      placeholder="exp:taylor"
+                      id="id"
+                      required
+                    />
+                    <label for="id" class="form__label">说话人id</label>
+                  </div>
+                </div>
+                <div class="custom-item box-three">
+                  <p class="bubble3">加速倍数</p>
+                  <div class="form__group u-margin-left-large">
+                    <input
+                      v-model="speedup"
+                      :disabled="prohibited"
+                      type="text"
+                      class="form__input"
+                      placeholder="请填写1-50的整数"
+                      id="speedup"
+                      required
+                    />
+                    <label for="speedup" class="form__label"
+                      >请填写1-50的整数</label
+                    >
+                  </div>
+                </div>
+                <div class="custom-item box-four">
+                  <div class="true_or_false bool_one">
+                    <p class="bubble4">基频偏移</p>
+                    <div class="form__group">
+                      <div class="form__radio-group">
+                        <input
+                          value="true"
+                          v-model="f0"
+                          :disabled="prohibited"
+                          type="radio"
+                          class="form__radio-input"
+                          id="adjust1"
+                          name="f0_adjust"
+                        />
+                        <label for="adjust1" class="form__radio-label">
+                          <span class="form__radio-button"></span>T</label
+                        >
+                      </div>
+                      <div class="form__radio-group">
+                        <input
+                          value="false"
+                          v-model="f0"
+                          :disabled="prohibited"
+                          type="radio"
+                          class="form__radio-input"
+                          id="adjust2"
+                          name="f0_adjust"
+                        />
+                        <label for="adjust2" class="form__radio-label"
+                          ><span class="form__radio-button"></span>F</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="true_or_false bool_two">
+                    <p class="u-font-weight bubble5">USE_Diff</p>
+                    <div class="form__group">
+                      <div class="form__radio-group">
+                        <input
+                          value="true"
+                          v-model="use_diff"
+                          :disabled="prohibited"
+                          type="radio"
+                          class="form__radio-input"
+                          id="diff1"
+                          name="use_diff"
+                        />
+                        <label for="diff1" class="form__radio-label">
+                          <span class="form__radio-button"></span>T</label
+                        >
+                      </div>
+                      <div class="form__radio-group">
+                        <input
+                          value="false"
+                          v-model="use_diff"
+                          :disabled="prohibited"
+                          type="radio"
+                          class="form__radio-input"
+                          id="diff2"
+                          name="use_diff"
+                        />
+                        <label for="diff2" class="form__radio-label"
+                          ><span class="form__radio-button"></span>F</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="true_or_false bool_three">
+                    <p class="u-font-weight bubble6">USE GPU</p>
+                    <div class="form__group">
+                      <div class="form__radio-group">
+                        <input
+                          value="true"
+                          v-model="use_gpu"
+                          :disabled="prohibited"
+                          type="radio"
+                          class="form__radio-input"
+                          id="gputrue"
+                          name="use_gpu"
+                        />
+                        <label for="gputrue" class="form__radio-label">
+                          <span class="form__radio-button"></span>T</label
+                        >
+                      </div>
+                      <div class="form__radio-group">
+                        <input
+                          value="false"
+                          v-model="use_gpu"
+                          :disabled="prohibited"
+                          type="radio"
+                          class="form__radio-input"
+                          id="gpufalse"
+                          name="use_gpu"
+                        />
+                        <label for="gpufalse" class="form__radio-label"
+                          ><span class="form__radio-button"></span>F</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-content">
+          <div class="user-info">
+            <h4>help and more</h4>
+          </div>
+
+          <div class="active-calories">
+            <h1 style="align-self: flex-start">Progress of 5 Step</h1>
+            <div class="active-calories-container">
+              <div class="box progressBar" :style="{'--i': progress+'%'}">
+                <div class="circle">
+                  <h2 class="cih">{{progress}}<small>%</small></h2>
+                </div>
+              </div>
+              <div class="calories-content">
+                <p><span>共有：</span>{{totalCount}} 个文件</p>
+                <p><span>文件总大小：</span>{{totalSize}} MB</p>
+                <p><span>建议文件类型：</span> WAV</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="friends-activity">
+            <h1>Sound Color</h1>
+            <div class="card-container">
+              <div class="card" @click="singerid = 'trump'">
+                <div class="card-user-info">
+                  <img src="img/tlp.jpg" alt="trump profile" />
+                  <h2>Trump</h2>
+                </div>
+                <img
+                  class="card-img"
+                  src="img/tlp-large.jpg"
+                  alt="trump when speeking"
+                />
+                <p>用前美国总统特朗普的声音来翻唱你想让他唱的歌!😏</p>
+              </div>
+              <div class="card" @click="singerid = 'taylor'">
+                <div class="card-user-info">
+                  <img src="img/ts.jpg" alt="Taylor profile" />
+                  <h2>Taylor Swift</h2>
+                </div>
+                <img
+                  class="card-img"
+                  src="img/ts-large-2.jpg"
+                  alt="Taylor Swift"
+                />
+                <p>用世界巨星泰勒·斯威夫特美妙的嗓音翻唱你想让她唱的歌!🥰</p>
+              </div>
+              <div class="card" @click="singerid = 'justin'">
+                <div class="card-user-info">
+                  <img src="img/Justin-Bieber.jpg" alt="Justin profile" />
+                  <h2>Justin Bieber</h2>
+                </div>
+                <img
+                  class="card-img"
+                  src="img/Justin-Bieber-large.jpg"
+                  alt="Justin Bieber"
+                />
+                <p>用美国唱将贾斯汀·比伯的声音翻唱你想让他唱的歌!💪</p>
+              </div>
+              <div class="card" @click="singerid = 'adele'">
+                <div class="card-user-info">
+                  <img src="img/adele.jpg" alt="Adele profile" />
+                  <h2>Adele</h2>
+                </div>
+                <img class="card-img" src="img/Adele-large.jpg" alt="Adele" />
+                <p>用实例厚嗓力量歌手阿黛尔的独特声音翻唱你想让她唱的歌!🤩</p>
+              </div>
+              <div class="card" @click="singerid = 'tmz'">
+                <div class="card-user-info">
+                  <img src="img/tan.jpg" alt="trump profile" />
+                  <h2>组员·谭美姿</h2>
+                </div>
+                <img
+                  class="card-img"
+                  src="img/tan-large.jpg"
+                  alt="trump when speeking"
+                />
+                <p>用我们服创小组成员谭美姿的动听声音翻唱你想让她唱的歌!🏃‍♀️🎉</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="popup" :class="Popclass1Obj">
+        <div class="popup__content">
+          <div class="popup__left">
+            <img src="img/popup-1.jpg" alt="popup img 1" class="popup__img" />
+            <img src="img/popup-2.jpg" alt="popup img 2" class="popup__img" />
+          </div>
+          <div class="popup__right">
+            <ion-icon
+              name="close-outline"
+              class="popup__close"
+              @click="closeFilePopup"
+            ></ion-icon>
+
+            <h2 class="heading-secondary u-margin-bottom-small">
+              Notes on File
+            </h2>
+            <h3 class="heading-tertiary u-margin-bottom-small">
+              Important &ndash; Please read these precautions before starting
+            </h3>
+            <p class="popup__text">
+              1.支持单文件和多文件上传，上传成功后有成功提示图标和文字，并且显示上传到服务器的文件路径
+            </p>
+            <p class="popup__text">
+              2.在点击上传文件之前，您可以点击删除按钮删除选择的文件
+            </p>
+            <p class="popup__text">
+              3.在开始分离和混音结束之间您无法继续上传文件到服务端
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="popup" :class="Popclass2Obj">
+        <div class="popup__content">
+          <div class="popup__left">
+            <img src="img/popup-1.jpg" alt="popup img 1" class="popup__img" />
+            <img src="img/popup-2.jpg" alt="popup img 2" class="popup__img" />
+          </div>
+          <div class="popup__right">
+            <ion-icon
+              name="close-outline"
+              class="popup__close"
+              @click="closeSchedulePopup"
+            ></ion-icon>
+
+            <h2 class="heading-secondary u-margin-bottom-small">
+              Notes on Schedule
+            </h2>
+            <h3 class="heading-tertiary u-margin-bottom-small">
+              Important &ndash; Please read these precautions before starting
+            </h3>
+            <p class="popup__text">
+              1.点击人声分离板块下的start按钮，可以将您上传的歌曲的人声和背景音乐分离；在点击start按钮之前，请确保您的文件已经上传至服务器。
+            </p>
+            <p class="popup__text">
+              2.点击开始转换板块下的start按钮，可以将人声分离后的人声转换成您选择的音色。转换完成后，文件路径相关面板会显示程序输出音频所在的文件路径；在点击start按钮之前，请确保Custom下说话人id填入正确的值
+            </p>
+            <p class="popup__text">
+              3.点击混音板块下的start按钮，可以将转换后的人声与分离好的背景音乐混音，从而得到一首AI&nbsp;Cover的完整作品。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="runpop" :class="RunpopClassObj">
+        <div class="runpop-content">
+          <div class="text">请等待......</div>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="instance.js"></script>
+  <script src="index.js"></script>
+</html>
