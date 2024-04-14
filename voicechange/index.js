@@ -37,6 +37,9 @@ const vm = new Vue({
         showus: false,
       },
 
+      RunpopClassObj: {
+        showus: false,
+      },
       prohibited: false,
       prohibited1: false,
       isClicked: false,
@@ -87,10 +90,8 @@ const vm = new Vue({
       console.log(this.files);
       this.progress = 20;
     },
-    dragfiles() {},
     dropfiles(e) {
       // let files = Array.from(e.dataTransfer.files);
-
       this.getfiles(e.dataTransfer.files);
     },
     select(e) {
@@ -164,6 +165,7 @@ const vm = new Vue({
         alert("请先上传歌曲文件后再点击人声分离");
         return;
       }
+      this.RunpopClassObj.showus = true;
       this.prohibited1 = true; //禁用文件表单
       //  /separate
       try {
@@ -177,6 +179,8 @@ const vm = new Vue({
         throw data.codeText;
       } catch (err) {
         alert("人声分离失败");
+      } finally {
+        this.RunpopClassObj.showus = false;
       }
     },
     postForm(formData, paraName, value, url) {
@@ -204,6 +208,7 @@ const vm = new Vue({
         return;
       }
       this.prohibited = true; //禁用表单
+      this.RunpopClassObj.showus = true;
       //  /key
       let keyfd = new FormData();
       this.postForm(keyfd, "key", this.key, "/key");
@@ -248,6 +253,9 @@ const vm = new Vue({
         .catch((reason) => {
           // console.log(reason.message);
           alert(`转换失败,可能的原因是${reason.message}`);
+        })
+        .finally(() => {
+          this.RunpopClassObj.showus = false;
         });
     },
     combine_audio() {
@@ -255,6 +263,7 @@ const vm = new Vue({
         alert("请先转换完成后再点击混音");
         return;
       }
+      this.RunpopClassObj.showus = true;
       instance
         .get("/combine_audio")
         .then((data) => {
@@ -275,6 +284,7 @@ const vm = new Vue({
         })
         .finally(() => {
           //取消表单禁用 + 状态归原
+          this.RunpopClassObj.showus = false;
           this.prohibited = false;
           this.prohibited1 = false;
           this.isFileUpload = false;

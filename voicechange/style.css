@@ -1251,6 +1251,40 @@ main {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+.runpop {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+}
+
+.runpop-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 40%;
+  background-color: #fff;
+  border-radius: 3px;
+  z-index: 90000;
+}
+
+.text {
+  display: inline;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+}
 .showus {
   opacity: 1;
   visibility: visible;
